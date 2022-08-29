@@ -1,8 +1,5 @@
-from django.shortcuts import render
+""" All Views of the Authentication Application
 
-<<<<<<< HEAD
-# Create your views here.
-=======
 This file contains all the views of the authentication Application. The views
 are used to create, update, delete and list the users. This file also contains
 a custom permission class that is used to check if the user is related to the
@@ -79,4 +76,3 @@ class AllUserViewSet(viewsets.GenericViewSet, ListModelMixin):
     permission_classes = [IsAuthenticated]
     serializer_class = UserViewSerializer
     lookup_field = 'pk'
->>>>>>> 2e415a1 (Set code format)

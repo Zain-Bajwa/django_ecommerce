@@ -1,7 +1,4 @@
 # Environments
 .venv
 .DS_Store
-<<<<<<< HEAD
-=======
 __pycache__
->>>>>>> e7d79c3 (Add __pycache__ in .gitignare)
