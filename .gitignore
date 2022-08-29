@@ -2,4 +2,7 @@
 .venv
 .DS_Store
 __pycache__
+<<<<<<< HEAD
 .env
+=======
+>>>>>>> f2553bb (Add product api in authentication app)
