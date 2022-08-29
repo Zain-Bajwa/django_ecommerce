@@ -36,9 +36,9 @@ app_name = 'authentication'
 router = routers.DefaultRouter()
 
 # For retrieve, update, and delete a user
-router.register("user", UserViewSet, basename="user")
+router.register("user", UserViewSet, basename="user-view")
 # For retrieve all the users
-router.register("users", AllUserViewSet, basename="user-view")
+router.register("users", AllUserViewSet, basename="users-view")
 
 # For retrieve, update, and delete a Category
 router.register("category", CategoryViewSet, basename="category-view")

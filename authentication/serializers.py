@@ -74,7 +74,6 @@ class UserViewSerializer(serializers.ModelSerializer):
 
     This class is used to format the user data. The user data is returned in a
     json format including the user id, email, username, first name, last name,
-
     address and phone number. The user data is returned in a json format
     including the user id, email, username, first name, last name, address and
     phone number.
