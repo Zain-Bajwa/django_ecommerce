@@ -31,10 +31,10 @@
 ### Django Setup
 - Create `Django` project
 
-    `django-admin startproject ecommerece`
+    `django-admin startproject django_ecommerece`
 - Go to the directory `ecommerence` and create an App `authentication`
 
-    `django-admin startapp user_api`
+    `django-admin startapp authentication`
 
 - Install using `Django Rest Framework`
 
@@ -45,6 +45,8 @@ Add `'rest_framework'` to your `INSTALLED_APPS` in setting.py.
 INSTALLED_APPS = [
     ...
     'rest_framework',
+    'rest_framework_simplejwt',
+    'authentication',
 ]
 ```
 - Run [manage.py]() directly.
