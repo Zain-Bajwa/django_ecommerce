@@ -12,17 +12,18 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.mixins import (DestroyModelMixin, ListModelMixin,
                                    RetrieveModelMixin, UpdateModelMixin)
 from rest_framework.response import Response
-from .serializers import RegisterSerializers, UserViewSerializer
+from rest_framework_simplejwt.views import TokenViewBase
+from .serializers import UserRegisterSerializer, UserViewSerializer, CreateTokneSerialzer
 from .models import User
 
-class RegisterView(generics.GenericAPIView):
+class UserRegisterView(generics.GenericAPIView):
     """User Registration View
 
     This view is used to create a new user. The user is created using the
     GenericAPIView class. The serializer is used to validate the data. The user
     is created and the data is returned.
     """
-    serializer_class = RegisterSerializers
+    serializer_class = UserRegisterSerializer
 
     def post(self, request):
         user = request.data
@@ -75,4 +76,14 @@ class AllUserViewSet(viewsets.GenericViewSet, ListModelMixin):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = UserViewSerializer
-    lookup_field = 'pk'
+
+
+class CreateTokenView(TokenViewBase):
+    """Create Token View
+
+    This view is used to create a new token. This is inherited from the
+    TokenViewBase of the rest_framework_simplejwt.views. The purpose of this
+    view is to create a new token and override the default_error_message.
+    """
+
+    serializer_class = CreateTokneSerialzer

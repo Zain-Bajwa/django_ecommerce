@@ -9,9 +9,8 @@ views to create, refresh and verify the tokens.
 
 from django.urls import path
 from rest_framework import routers
-from rest_framework_simplejwt.views import (TokenObtainPairView,
-                                            TokenRefreshView, TokenVerifyView)
-from .views import RegisterView, UserViewSet, AllUserViewSet
+from rest_framework_simplejwt.views import (TokenRefreshView, TokenVerifyView)
+from .views import UserRegisterView, UserViewSet, AllUserViewSet, CreateTokenView
 
 router = routers.DefaultRouter()
 
@@ -21,8 +20,8 @@ router.register('user', UserViewSet, basename='user-view')
 router.register('users', AllUserViewSet, basename='user-view')
 
 urlpatterns = [
-    path('register/', RegisterView.as_view(), name='register'),
-    path('token/create/', TokenObtainPairView.as_view(), name='create-token'),
+    path('register/user/', UserRegisterView.as_view(), name='register-user'),
+    path('token/create/', CreateTokenView.as_view(), name='create-token'),
     path('token/refresh/', TokenRefreshView.as_view(), name='refresh-token'),
     path('token/verify/', TokenVerifyView.as_view(), name='verify-token'),
 ]
