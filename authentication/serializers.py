@@ -85,5 +85,5 @@ class CreateTokneSerialzer(TokenObtainPairSerializer):
     """
 
     default_error_messages = {
-                        'no_active_account': _('Invalid email/password.')
+                        'no_active_account': _('Invalid username/password.')
     }
