@@ -29,6 +29,7 @@ from .views import (
     OrderPlaceView,
     OrderDetailView,
     CreateProductView,
+    FrontEndView
 )
 
 router = routers.DefaultRouter()
@@ -67,6 +68,7 @@ urlpatterns = [
     path("order/place", OrderPlaceView.as_view(), name="place-order-view"),
     path("order/detail", OrderDetailView.as_view(), name="order-detail-view"),
     path("product/create", CreateProductView.as_view(), name="create-product"),
+    path("home",FrontEndView.as_view())
 ]
 
 urlpatterns += router.urls

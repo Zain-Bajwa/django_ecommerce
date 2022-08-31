@@ -8,6 +8,7 @@ that Toekn.
 """
 
 # pylint: disable=no-member,too-many-ancestors
+from django.views.generic.base import TemplateView
 
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -220,9 +221,6 @@ class AllProductViewSet(
     This viewset is used to retrieve all the products with GET method. It is
     also used to create a new product with POST method.
     """
-
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
 
     queryset = Product.objects.all()
     serializer_class = ProductViewSerializer
@@ -481,3 +479,7 @@ class OrderDetailView(generics.ListAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         return OrderItem.objects.filter(order__user__id=int(user_id))
+
+
+class FrontEndView(TemplateView):
+    template_name = "home.html"
