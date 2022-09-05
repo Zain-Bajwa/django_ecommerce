@@ -10,7 +10,12 @@ views to create, refresh and verify the tokens.
 from django.urls import path
 from rest_framework import routers
 from rest_framework_simplejwt.views import (TokenRefreshView, TokenVerifyView)
-from .views import UserRegisterView, UserViewSet, AllUserViewSet, CreateTokenView
+from .views import (
+    UserRegisterView,
+    UserViewSet,
+    AllUserViewSet,
+    CreateTokenView
+)
 
 router = routers.DefaultRouter()
 

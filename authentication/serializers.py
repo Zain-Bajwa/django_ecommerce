@@ -5,12 +5,13 @@ RegisterSerializers is used to create the user. The UserViewSerializer is used
 to format the user profile data into json format.
 """
 from rest_framework import serializers
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.utils.translation import gettext_lazy as _
 from .models import User
 
 
+# pylint: disable=too-few-public-methods
 class UserRegisterSerializer(serializers.ModelSerializer):
     """User Register Serializer
 
@@ -63,6 +64,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return user
 
 
+# pylint: disable=abstract-method
 class UserViewSerializer(serializers.ModelSerializer):
     """User View Serializer
 
@@ -71,6 +73,7 @@ class UserViewSerializer(serializers.ModelSerializer):
     address and phone number.
     """
     class Meta:
+        """Meta class for UserView Serializer"""
         model = User
         fields = ['id', 'email', 'username', 'first_name', 'last_name',
                   'address', 'phone_no']
@@ -78,7 +81,7 @@ class UserViewSerializer(serializers.ModelSerializer):
 
 class CreateTokneSerialzer(TokenObtainPairSerializer):
     """Create Token Serializer
-    
+
     This class is used to create the token. The token is created using the
     TokenObtainPairSerializer class. The token is returned in a json format.
     In this class the default error message is overridden.

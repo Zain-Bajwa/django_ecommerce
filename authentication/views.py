@@ -8,13 +8,20 @@ that Toekn.
 
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.response import Response
 from rest_framework.mixins import (DestroyModelMixin, ListModelMixin,
                                    RetrieveModelMixin, UpdateModelMixin)
-from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenViewBase
-from .serializers import UserRegisterSerializer, UserViewSerializer, CreateTokneSerialzer
+from django.core.exceptions import ObjectDoesNotExist
+from .serializers import (
+    UserRegisterSerializer,
+    UserViewSerializer,
+    CreateTokneSerialzer
+)
+
 from .models import User
+
 
 class UserRegisterView(generics.GenericAPIView):
     """User Registration View
@@ -26,6 +33,7 @@ class UserRegisterView(generics.GenericAPIView):
     serializer_class = UserRegisterSerializer
 
     def post(self, request):
+        """post method for """
         user = request.data
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
@@ -46,11 +54,16 @@ class OwnProfilePermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
         """Override has_permission method"""
-        return request.user == User.objects.get(pk=view.kwargs['pk'])
+        try:
+            User.objects.get(pk=view.kwargs['pk'])
+            return request.user == User.objects.get(pk=view.kwargs['pk'])
+        except ObjectDoesNotExist:
+            return False
 
 
+# pylint: disable=too-many-ancestors
 class UserViewSet(viewsets.GenericViewSet, RetrieveModelMixin,
-                UpdateModelMixin, DestroyModelMixin):
+                  UpdateModelMixin, DestroyModelMixin):
     """User ViewSet
     This viewset is used to retrieve, update and delete a user. In this class
     JWT authentication is used to authenticate the user. This class also uses
@@ -73,8 +86,8 @@ class AllUserViewSet(viewsets.GenericViewSet, ListModelMixin):
     """
 
     queryset = User.objects.all()
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
     serializer_class = UserViewSerializer
 
 
