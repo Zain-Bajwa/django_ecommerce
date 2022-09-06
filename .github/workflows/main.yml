@@ -1,0 +1,26 @@
+name: Pylint, PyCodeStyle, PyTest Runner
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Requirements
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run django test
+      env:
+        GITHUB_TOKEN: ${{ secrets.DJANGO_ECOMMERCE_SECRET }}
+      run: |
+        python manage.py test
+    - name: Run pycodestyle
+      run: |
+        pycodestyle --exclude=authentication/migrations ./authentication
+        pycodestyle --exclude=authentication/migrations ./django_ecommerce
+    - name: Run pylint
+      run: |
+        pylint --ignore-paths=authentication/migrations ./authentication 
+        pylint --ignore-paths=authentication/migrations ./django_ecommerce
