@@ -17,6 +17,7 @@ from .views import (
     AddToCartView,
     AllProductViewSet,
     AllUserViewSet,
+    CreateTokenView,
     AllCategoryViewSet,
     CartView,
     CategoryProductView,
@@ -31,10 +32,11 @@ from .views import (
     CreateTokenView,
 )
 
+app_name = 'authentication'
 router = routers.DefaultRouter()
 
 # For retrieve, update, and delete a user
-router.register("user", UserViewSet, basename="user-view")
+router.register("user", UserViewSet, basename="user")
 # For retrieve all the users
 router.register("users", AllUserViewSet, basename="user-view")
 

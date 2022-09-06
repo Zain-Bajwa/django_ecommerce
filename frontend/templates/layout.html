@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<!--
+assets/css/fontawesome.css
+TemplateMo 546 Sixteen Clothing
+
+https://templatemo.com/tm-546-sixteen-clothing
+
+-->
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-sixteen.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+
+  </head>
+
+  <body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>  
+    <!-- ***** Preloader End ***** -->
+
+    <!-- Header -->
+    {% block header %}
+    <header class="">
+      <nav class="navbar navbar-expand-lg">
+          <a class="navbar-brand p-3" href="#">
+            <img class="rounded-circle z-depth-2" src="{% static 'media/logo/brand.png' %}" width="30" height="30" alt="">
+          </a>
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'frontend:home-view' %}"><h2>Sixteen <em>Clothing</em></h2></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item {% block home_active %}{% endblock %}">
+                <a class="nav-link" href="{% url 'frontend:home-view' %}">Home
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li> 
+              <li class="nav-item {% block product_active %}{% endblock %}">
+                <a class="nav-link" href="{% url 'frontend:products-view' %}">Our Products</a>
+              </li>
+              <li class="nav-item {% block about_active %}{% endblock %}">
+                <a class="nav-link" href="{% url 'frontend:about-view' %}">About Us</a>
+              </li>
+              <li class="nav-item {% block contact_active %}{% endblock %}">
+                <a class="nav-link" href="{% url 'frontend:contact-view' %}">Contact US</a>
+              </li>
+              <li class="nav-item" id="login">
+                <a class="nav-link" href="{% url 'frontend:login-view' %}">Login</a>
+              </li>
+              <li class="nav-item d-none" id="logout">
+                <a class="nav-link" href="#" onclick="logout()">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="pt-0 navbar-collapse">
+          <ul class="pt-0 navbar-nav ml-auto">
+              <li class="nav-item">
+                <span class="pt-0 navbar-text text-light" id="user-name"></span>
+              </li>
+          </ul>
+      </div>
+      </nav>
+    </header>
+    {% endblock %}
+
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    {% block content %}{% endblock %}
+    <!-- Footer -->
+    {% block footer %}{% endblock %}
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+    <!-- Additional Scripts -->
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="{% static 'assets/js/owl.js' %}"></script>
+    <script src="{% static 'assets/js/slick.js' %}"></script>
+    <script src="{% static 'assets/js/isotope.js' %}"></script>
+    <script src="{% static 'assets/js/accordions.js' %}"></script>
+
+    <script>
+      function logout(){
+        sessionStorage.removeItem("access")
+        sessionStorage.removeItem("refresh")
+        sessionStorage.removeItem("user_id")
+        window.location.href = "{% url 'frontend:login-view' %}"
+      }
+      async function get_user(){
+        
+        const Bearer_access = sessionStorage.access
+        const Bearer_refresh = sessionStorage.refresh
+        const user_id = sessionStorage.user_id
+        
+        const header = new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + Bearer_access
+        });
+        const url = "/auth/user/" + user_id
+        let response = await fetch(url, {
+          method: 'GET',
+          headers: header
+        });
+        
+        data = await response.json()
+        if (response.ok){
+          document.getElementById("login").classList.add("d-none");
+          document.getElementById("logout").classList.remove("d-none");
+          document.getElementById("user-name").innerHTML = "Mr. " + data.username  
+        }
+      }
+
+      $(document).ready(function () {
+        get_user()
+      });
+
+    </script>
+
+    <script language = "text/Javascript"> 
+      cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+      function clearField(t){                   //declaring the array outside of the
+      if(! cleared[t.id]){                      // function makes it static and global
+          cleared[t.id] = 1;  // you could use true and false, but that's more typing
+          t.value='';         // with more chance of typos
+          t.style.color='#fff';
+          }
+      }
+    </script>
+
+  </body>
+
+</html>

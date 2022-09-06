@@ -95,6 +95,23 @@ class UserViewSerializer(serializers.ModelSerializer):
         ]
 
 
+class CreateTokneSerialzer(TokenObtainPairSerializer):
+    """Create Token Serializer
+    This class is used to create the token. The token is created using the
+    TokenObtainPairSerializer class. The token is returned in a json format.
+    In this class the default error message is overridden.
+    """
+
+    default_error_messages = {
+                        'no_active_account': _('Invalid username/password.')
+    }
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data["user_id"] = self.user.id
+        return data
+
+
 class CategoryViewSerializer(serializers.ModelSerializer):
     """Category View Serializer
 

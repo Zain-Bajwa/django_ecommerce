@@ -25,6 +25,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .serializers import (
     UserRegisterSerializer,
     UserViewSerializer,
+    CreateTokneSerialzer,
     CategoryViewSerializer,
     CartSerializer,
     ProductViewSerializer,
@@ -71,7 +72,10 @@ class OwnProfilePermission(permissions.BasePermission):
             user_id = view.kwargs["user_id"]
             return request.user == User.objects.get(pk=user_id)
         except KeyError:
-            return request.user == User.objects.get(pk=view.kwargs["pk"])
+            try:
+                return request.user == User.objects.get(pk=view.kwargs["pk"])
+            except ObjectDoesNotExist:
+                return request.user == request.user.is_authenticated
 
 
 class UserViewSet(
