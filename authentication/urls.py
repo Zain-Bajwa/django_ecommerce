@@ -29,9 +29,9 @@ from .views import (
     OrderPlaceView,
     OrderDetailView,
     CreateProductView,
-    CreateTokenView,
 )
 
+# pylint: disable=invalid-name
 app_name = 'authentication'
 router = routers.DefaultRouter()
 

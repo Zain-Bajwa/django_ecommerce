@@ -30,7 +30,6 @@ from .serializers import (
     CartSerializer,
     ProductViewSerializer,
     OrderDetailSerializer,
-    CreateTokneSerialzer,
 )
 from .models import Category, Product, User, Cart, Order, OrderItem
 
@@ -156,7 +155,7 @@ class CategoryViewSet(
         try:
             return super().destroy(request, *args, **kwargs)
 
-        except Exception as e:
+        except RuntimeError:
             product = Product.objects.filter(category__id=kwargs["pk"])
             serializer = ProductViewSerializer(product, many=True)
             return Response(
@@ -253,7 +252,7 @@ class CategoryProductView(generics.ListAPIView):
         return Product.objects.filter(category__name=gategory_name)
 
 
-class AddToCartView(generics.ListAPIView):
+class AddToCartView(generics.CreateAPIView):
     """Add To Cart View
 
     This view is used to add a product to the cart. The product is added using
@@ -266,7 +265,10 @@ class AddToCartView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, OwnProfilePermission]
     queryset = Product.objects.all()
     serializer_class = CartSerializer
+    lookup_field = 'pk'
 
+    # pylint: disable=protected-access
+    # pylint: disable=bare-except
     def post(self, request, *args, **kwargs):
         """Add a product to the cart"""
 
@@ -309,7 +311,7 @@ class AddToCartView(generics.ListAPIView):
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        except Exception as e:
+        except:
             return Response(
                 {"message": "Something went wrong"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -348,7 +350,8 @@ class RemoveFromCartView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, OwnProfilePermission]
     serializer_class = CartSerializer
 
-    def delete(self, request, *args, **kwargs):
+    # pylint: disable=too-many-return-statements
+    def delete(self, request):
         """Remove a product from the cart"""
 
         user_id = request.query_params.get("user_id")
@@ -377,10 +380,10 @@ class RemoveFromCartView(generics.ListAPIView):
                 )
             if (
                 Cart.objects.filter(
-                    user__id=int(user_id), product__id=int(product_id)
-                ).delete()[0]
-                > 0
-            ):
+                        user__id=int(user_id), product__id=int(product_id)
+                    )
+                    .delete()[0] > 0
+                ):
                 return Response(
                     {"message": "Product removed from cart"},
                     status=status.HTTP_200_OK,
@@ -407,6 +410,7 @@ class OrderPlaceView(generics.GenericAPIView):
     order is placed and the success message is returned.
     """
 
+    # pylint: disable=bare-except
     def post(self, request):
         """Place an order"""
 
@@ -416,6 +420,7 @@ class OrderPlaceView(generics.GenericAPIView):
                 {"message": "User id is required in query parameter"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
         try:
             user = User.objects.filter(pk=int(user_id))
             if user.count() > 0:
@@ -450,15 +455,13 @@ class OrderPlaceView(generics.GenericAPIView):
                     return Response(
                         {"message": "Order placed"}, status=status.HTTP_200_OK
                     )
-                else:
-                    return Response(
-                        {"message": "Cart is empty"}, status=status.HTTP_200_OK
-                    )
-            else:
                 return Response(
-                    {"message": "Not a valid User"}, status=status.HTTP_200_OK
+                    {"message": "Cart is empty"}, status=status.HTTP_200_OK
                 )
-        except Exception as e:
+            return Response(
+                {"message": "Not a valid User"}, status=status.HTTP_200_OK
+            )
+        except:
             return Response(
                 {"message": "Something went wrong"}, status=status.HTTP_200_OK
             )
