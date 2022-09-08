@@ -9,7 +9,7 @@ that Toekn.
 
 # pylint: disable=no-member,too-many-ancestors
 
-from rest_framework import generics, permissions, status, viewsets
+from rest_framework import generics, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.mixins import (
     CreateModelMixin,
@@ -21,7 +21,6 @@ from rest_framework.mixins import (
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenViewBase
-from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic.base import TemplateView
 from .serializers import (
     ReviewSerializer,
@@ -35,7 +34,7 @@ from .serializers import (
 )
 from .models import (Category, Product, User, Cart, Order,
     OrderItem, ProductReview)
-from django.shortcuts import get_object_or_404
+from .permissions import OwnProfilePermission, IsSuperUser
 
 
 class UserRegisterView(generics.GenericAPIView):
@@ -58,27 +57,6 @@ class UserRegisterView(generics.GenericAPIView):
         user_data = serializer.data
 
         return Response(user_data, status=status.HTTP_201_CREATED)
-
-
-class OwnProfilePermission(permissions.BasePermission):
-    """Custom Permission Class for the UserViewSet class
-
-    This class is used to check if the user is related to his token. This class
-    is used in the UserViewSet class. This class is inherited from the
-    BasePermission to connect to the has_permission method.
-    """
-
-    def has_permission(self, request, view):
-        """Check if the user is related to the token"""
-
-        try:
-            user_id = view.kwargs["user_id"]
-            return request.user == User.objects.get(pk=user_id)
-        except KeyError:
-            try:
-                return request.user == User.objects.get(pk=view.kwargs["pk"])
-            except ObjectDoesNotExist:
-                return request.user == request.user.is_authenticated
 
 
 class UserViewSet(
@@ -109,19 +87,6 @@ class UserViewSet(
         )
 
 
-class IsSuperUser(permissions.BasePermission):
-    """Custom Permission Class for the AllUserViewSet Class
-
-    This class is used to check if the user is a superuser. This class is used
-    in the AllUserViewSet class.
-    """
-
-    def has_permission(self, request, view):
-        """Check if the user is a superuser"""
-
-        return request.user and request.user.is_superuser
-
-
 class AllUserViewSet(viewsets.GenericViewSet, ListModelMixin):
     """All User ViewSet
     This viewset is used to retrieve all the users. This class uses the JWT
@@ -134,12 +99,7 @@ class AllUserViewSet(viewsets.GenericViewSet, ListModelMixin):
     serializer_class = UserViewSerializer
 
 
-class CategoryViewSet(
-    viewsets.GenericViewSet,
-    RetrieveModelMixin,
-    UpdateModelMixin,
-    DestroyModelMixin,
-):
+class CategoryViewSet(viewsets.GenericViewSet, RetrieveModelMixin):
     """Category ViewSet
 
     This viewset is used to retrieve, update and delete a category. In this
@@ -148,7 +108,7 @@ class CategoryViewSet(
     """
 
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategoryViewSerializer
     lookup_field = "pk"
@@ -171,9 +131,7 @@ class CategoryViewSet(
             )
 
 
-class AllCategoryViewSet(
-    viewsets.GenericViewSet, ListModelMixin, CreateModelMixin
-):
+class AllCategoryViewSet(viewsets.GenericViewSet, ListModelMixin):
     """All Category ViewSet
 
     This viewset is used to retrieve all the categories and also used to create
@@ -201,12 +159,7 @@ class CreateProductView(generics.CreateAPIView):
     serializer_class = ProductViewSerializer
 
 
-class ProductViewSet(
-    viewsets.GenericViewSet,
-    RetrieveModelMixin,
-    UpdateModelMixin,
-    DestroyModelMixin,
-):
+class ProductViewSet(viewsets.GenericViewSet, RetrieveModelMixin):
     """Product ViewSet
 
     This viewset is used to retrieve, update and delete a product. In this
@@ -216,22 +169,19 @@ class ProductViewSet(
 
     queryset = Product.objects.all()
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
     serializer_class = ProductViewSerializer
     lookup_field = "pk"
 
 
-class AllProductViewSet(
-    viewsets.GenericViewSet, CreateModelMixin, ListModelMixin
-):
+class AllProductViewSet(viewsets.GenericViewSet, ListModelMixin):
     """All Product ViewSet
 
-    This viewset is used to retrieve all the products with GET method. It is
-    also used to create a new product with POST method.
+    This viewset is used to retrieve all the products with GET method.
     """
 
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
 
     queryset = Product.objects.all()
     serializer_class = ProductViewSerializer
@@ -244,7 +194,7 @@ class CategoryProductView(generics.ListAPIView):
     """
 
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
     serializer_class = ProductViewSerializer
 
     def get_queryset(self):

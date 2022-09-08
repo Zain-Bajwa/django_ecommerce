@@ -29,7 +29,6 @@ from .views import (
     UserViewSet,
     OrderPlaceView,
     OrderDetailView,
-    CreateProductView,
     LoginView,
     RegisterView,
     RatingListViewSet,
@@ -50,13 +49,10 @@ router.register("category", CategoryViewSet, basename="category-view")
 # For retrieve all the categories
 router.register("categories", AllCategoryViewSet, basename="categories-view")
 
-# For retrieve, update, and delete a Product
+# For retrieve a Product
 router.register('product', ProductViewSet, basename='product-view')
 # For retrieve all the products
 router.register("products", AllProductViewSet, basename="products-view")
-# For create a new product
-# router.register('product/create', CreateProductView,
-#             basename='product-create')
 
 # Display all Reviews
 router.register('review', RatingListViewSet, basename='rating-view')
@@ -76,7 +72,6 @@ urlpatterns = [
     path("cart/remove", RemoveFromCartView.as_view(), name="remove-from-cart"),
     path("order/place", OrderPlaceView.as_view(), name="place-order-view"),
     path("order/detail", OrderDetailView.as_view(), name="order-detail-view"),
-    path("product/create", CreateProductView.as_view(), name="create-product"),
     path(
         "product/review/create/<int:user_id>",
         CreateReviewView.as_view(),
