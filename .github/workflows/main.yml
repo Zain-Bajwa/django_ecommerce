@@ -16,10 +16,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.DJANGO_ECOMMERCE_SECRET }}
       run: |
         python manage.py test
-    - name: Run pycodestyle
-      run: |
-        pycodestyle --exclude=authentication/migrations ./authentication
-        pycodestyle --exclude=authentication/migrations ./django_ecommerce
     - name: Run pylint
       run: |
         pylint --ignore-paths=authentication/migrations ./authentication 

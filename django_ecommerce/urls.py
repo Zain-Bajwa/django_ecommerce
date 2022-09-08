@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Add path for the authentication application
     path('auth/', include('authentication.urls')),
+    path('', include('frontend.urls')),
 ]

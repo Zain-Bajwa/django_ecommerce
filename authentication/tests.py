@@ -24,7 +24,7 @@ class RegistrationTestCase(APITestCase):
             "password": "Password@123",
             "confirm_password": "Password@123"
         }
-        url = reverse('register-user')
+        url = reverse('authentication:register-user')
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -46,6 +46,6 @@ class GetTokenTestCase(APITestCase):
         """
 
         data = {"username": "test4", "password": "Password@123"}
-        url = reverse('create-token')
+        url = reverse('authentication:create-token')
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
