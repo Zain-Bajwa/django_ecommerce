@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <!-- <title>{% block title %}{% endblock %}</title> -->
+
+</head>
+<body class="bg-light">
+
+<div class="container">
+    <div class="mx-auto bg-light p-3" style="width: 400px;">
+        <div class="row">
+            <h1 class="text-center">Register</h1>
+        </div>
+
+        <div class="row mx-0">
+            <div class="col-3  text-center">
+                <a class="text-decoration-none text-secondary" href="{% url 'authentication:login-view' %}"> <b>Login</b></a>
+            </div>
+            <div class="col-3 border-bottom border-3 border-primary pb-2 text-center">
+                <a class="text-decoration-none" href="{% url 'authentication:register-view' %}"><b>Register</b></a>
+            </div>
+        </div>
+        <form class="" action="javascript:register()" method="post" enctype="multipart/form-data">
+            <div class="input-group my-2">
+                <span class="input-group-text bg-primary" id="basic-addon1">
+                    <i class="fas fa-user text-white"></i>
+                </span>
+                <input type="text" class="form-control" name="username" placeholder="Username" id="username" >
+            </div>
+
+            <div class="text-center text-danger my-3" id="msg-username"></div>
+
+            <div class="input-group my-3">
+                <span class="input-group-text bg-primary" id="basic-addon1">
+                    <i class="fas fa-lock text-white"></i>
+                </span>
+                <input class="form-control" type="password" name="password" placeholder="Password" id="password" >
+            </div>
+
+            <div class="text-center text-danger my-3" id="msg-password"></div>
+
+            <div class="input-group my-3">
+                <span class="input-group-text bg-primary" id="basic-addon1">
+                    <i class="fas fa-lock text-white"></i>
+                </span>
+                <input class="form-control" type="password" name="confirm-password" placeholder="Confirm Password" id="confirm-password">
+            </div>
+            
+            <div class="text-center text-danger my-3" id="msg-confirm-password"></div>
+            <input type="submit" class="form-control fw-bold btn btn-primary" value="Register" onclick="register()"></input>
+            <div class="text-center text-success my-3" id="msg-success"></div>
+            <div class="text-center text-danger my-3" id="msg-password-match"></div>
+        </form>
+
+    </div>
+</div>
+</body>
+
+<script>
+
+    function clear_all_msg(){
+        document.getElementById('msg-username').innerHTML = "";
+        document.getElementById('msg-password').innerHTML = "";
+        document.getElementById('msg-confirm-password').innerHTML = "";
+        document.getElementById('msg-success').innerHTML = "";
+        document.getElementById('msg-password-match').innerHTML = "";
+    }
+
+    async function register() {
+
+        clear_all_msg();
+        //debugger
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
+        let confirmPassword = document.getElementById('confirm-password').value;
+        if (password != confirmPassword) {
+            document.getElementById('msg-password-match').innerHTML = "Password did't match";
+            return;
+        }
+        let formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+        formData.append('confirm_password', confirmPassword);
+
+        let response = await fetch("{% url 'authentication:register-user' %}", {
+            method: 'POST',
+            body: formData
+        });
+        let data = await response.json();
+        if (response.ok) {
+            document.getElementById('msg-success').innerHTML = "Successfully registered";
+        } else {
+            //debugger
+            if (data.username) {
+                document.getElementById('msg-username').innerHTML = data.username;
+            }
+            if (data.password) {
+                document.getElementById('msg-password').innerHTML = data.password;
+            }
+            if (data.confirm_password){
+                document.getElementById('msg-confirm-password').innerHTML = data.confirm_password;
+            }
+        }
+    }
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+
+</html>

@@ -22,7 +22,9 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenViewBase
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic.base import TemplateView
 from .serializers import (
+    ReviewSerializer,
     UserRegisterSerializer,
     UserViewSerializer,
     CreateTokneSerialzer,
@@ -31,7 +33,9 @@ from .serializers import (
     ProductViewSerializer,
     OrderDetailSerializer,
 )
-from .models import Category, Product, User, Cart, Order, OrderItem
+from .models import (Category, Product, User, Cart, Order,
+    OrderItem, ProductReview)
+from django.shortcuts import get_object_or_404
 
 
 class UserRegisterView(generics.GenericAPIView):
@@ -179,7 +183,7 @@ class AllCategoryViewSet(
 
     queryset = Category.objects.all()
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsSuperUser]
+    permission_classes = [IsAuthenticated]
     serializer_class = CategoryViewSerializer
 
 
@@ -252,7 +256,54 @@ class CategoryProductView(generics.ListAPIView):
         return Product.objects.filter(category__name=gategory_name)
 
 
-class AddToCartView(generics.CreateAPIView):
+class CreateReviewView(generics.ListAPIView):
+    """Create Review View"""
+
+    authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated, OwnProfilePermission]
+    queryset = ProductReview.objects.all()
+    serializer_class = ReviewSerializer
+    # lookup_field = "pk"
+
+    def post(self, request, *args, **kwargs):
+        """ Add record of review for a specific product
+        If record is already exist then it will update the review
+        """
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer._validated_data['user']
+        product = serializer._validated_data['product']
+        review = serializer._validated_data.get('review', "")
+        rating = serializer._validated_data.get('rating', 0)
+
+        if not ProductReview.objects.filter(user=user, product=product):
+            serializer._validated_data['review'] = review
+            serializer._validated_data['rating'] = int(rating)
+            serializer.save()
+
+            instance = ProductReview.objects.filter(user=user, product=product)
+            serializer = self.serializer_class(instance, many=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        else:
+            product_review = ProductReview.objects.filter(user=user, product=product)
+            product_review.update(
+                review=review,
+                rating=rating
+            )
+            instance = ProductReview.objects.filter(user=user, product=product)
+            serializer = self.serializer_class(instance, many=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class RatingListViewSet(viewsets.GenericViewSet, ListModelMixin):
+
+    queryset = ProductReview.objects.all()
+    serializer_class = ReviewSerializer
+
+
+class AddToCartView(generics.ListAPIView):
     """Add To Cart View
 
     This view is used to add a product to the cart. The product is added using
@@ -265,7 +316,6 @@ class AddToCartView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, OwnProfilePermission]
     queryset = Product.objects.all()
     serializer_class = CartSerializer
-    lookup_field = 'pk'
 
     # pylint: disable=protected-access
     # pylint: disable=bare-except
@@ -501,3 +551,11 @@ class CreateTokenView(TokenViewBase):
     """
 
     serializer_class = CreateTokneSerialzer
+
+
+class LoginView(TemplateView):
+    template_name = "authentication/login.html"
+
+
+class RegisterView(TemplateView):
+    template_name = "authentication/register.html"

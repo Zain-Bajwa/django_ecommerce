@@ -23,12 +23,17 @@ from .views import (
     CategoryProductView,
     CategoryViewSet,
     ProductViewSet,
+    CreateReviewView,
     RemoveFromCartView,
     UserRegisterView,
     UserViewSet,
     OrderPlaceView,
     OrderDetailView,
     CreateProductView,
+    LoginView,
+    RegisterView,
+    RatingListViewSet,
+
 )
 
 # pylint: disable=invalid-name
@@ -53,6 +58,9 @@ router.register("products", AllProductViewSet, basename="products-view")
 # router.register('product/create', CreateProductView,
 #             basename='product-create')
 
+# Display all Reviews
+router.register('review', RatingListViewSet, basename='rating-view')
+
 urlpatterns = [
     path("register/user/", UserRegisterView.as_view(), name="register-user"),
     path("token/create/", CreateTokenView.as_view(), name="create-token"),
@@ -69,6 +77,13 @@ urlpatterns = [
     path("order/place", OrderPlaceView.as_view(), name="place-order-view"),
     path("order/detail", OrderDetailView.as_view(), name="order-detail-view"),
     path("product/create", CreateProductView.as_view(), name="create-product"),
+    path(
+        "product/review/create/<int:user_id>",
+        CreateReviewView.as_view(),
+        name='create-review'
+    ),
+    path("login/", LoginView.as_view(), name="login-view"),
+    path('register/', RegisterView.as_view(), name='register-view'),
 ]
 
 urlpatterns += router.urls

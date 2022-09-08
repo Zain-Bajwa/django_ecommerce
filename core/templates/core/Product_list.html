@@ -1,0 +1,108 @@
+{% extends 'core/layout.html' %}
+
+{% load static %}
+{% load filters %}
+
+{% block title %}Products{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<div class="page-heading products-heading header-text">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="text-content">
+          <h4>new arrivals</h4>
+          <h2>sixteen products</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="products">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="filters">
+          <ul>
+              <li class="active" data-filter="*">All Products</li>
+              <li data-filter=".des">Featured</li>
+              <li data-filter=".dev">Flash Deals</li>
+              <li data-filter=".gra">Last Minute</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="filters-content">
+            <div class="row grid">
+              {% for product in product_list %}
+                <div class="col-lg-4 col-md-4 all">
+                  <div class="product-item">
+                    <a href="#"><img src="{{ product.image.url }}" height="150" alt=""></a>
+                    <div class="down-content">
+                      <a href="#"><h4>{{ p.name }}</h4></a>
+                      <h6>${{ product.price }}</h6>
+                      <p>
+                        {{ product.description }}
+                      </p>
+
+                      <ul class="stars">
+
+                        {% if product.avg_rating %}
+
+                        {% for i in product.avg_rating|times %}
+                        <li><i class="fa fa-star "></i></li>
+                        {% endfor %}
+                        
+                        {% for i in product.no_rating|times %}
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        {% endfor %}
+                        
+                        {% else %}
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        {% endif %}
+                      </ul>
+                      <span>Reviews ({{ product.count }})</span>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <ul class="pages">
+          <li><a href="#">1</a></li>
+          <li class="active"><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+<!-- Footer -->
+{% block footer %}
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="inner-content">
+          <p>Copyright &copy; 2020 Sixteen Clothing Co., Ltd.
+        
+        - Design: <a rel="nofollow noopener" href="https://templatemo.com" target="_blank">TemplateMo</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+{% endblock %}

@@ -2,7 +2,8 @@
 
 This file contains all the serializers for the authentication Application. The
 RegisterSerializers is used to create the user. The UserViewSerializer is used
-to format the user profile data into json format. The CategorySerializer
+to format the user profile data into json format. The AllUserViewSerializer is
+used to format the all the users data into json format. The CategorySerializer
 is used to create the category. The AllCategorySerializer is used to format the
 all the categories data into json format. The ProductSerializer is used to
 create the product and so on.
@@ -12,7 +13,7 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Cart, Category, Order, OrderItem, Product, User
+from .models import Cart, Category, Order, OrderItem, Product, User, ProductReview
 
 
 # pylint: disable=too-few-public-methods
@@ -145,6 +146,7 @@ class ProductViewSerializer(serializers.ModelSerializer):
             "stock",
             "sold",
             "description",
+            "image",
         ]
 
     def to_representation(self, instance):
@@ -153,6 +155,19 @@ class ProductViewSerializer(serializers.ModelSerializer):
             instance.category
         ).data.get("name")
         return representation
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    """Review Serializer
+
+    This serializer is used set the data format for Review Model
+    """
+    class Meta:
+        """Meta class for the ProductReview Serializer"""
+        model = ProductReview
+        fields = ['product', 'user', 'review', 'rating']
+        REQUIRED_FIELD = ['product', 'user']
+
 
 
 class CartSerializer(serializers.ModelSerializer):

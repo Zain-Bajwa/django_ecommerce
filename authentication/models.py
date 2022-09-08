@@ -10,6 +10,7 @@ for the Order and Cart
 """
 
 import datetime
+from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -69,6 +70,33 @@ class Product(models.Model):
     description = models.CharField(
         max_length=250, default="", blank=True, null=True
     )
+    image = models.ImageField(upload_to="products", blank=True)
+
+class ProductReview(models.Model):
+    """ProductReview Model
+
+    This model is used to take the review and rating from the user. This model
+    has following fields:
+    - product: Id of the product that is being reviewed
+    - user: Id of the user that is giving the review for a specific product
+    - review: A review message given by the user for specific product
+    - rating: An integer value from 0 to 5 given by the user for a specific
+      product
+    """
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=False)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True)
+
+    review = models.CharField(max_length=256, default='', blank=True)
+    rating  = models.IntegerField(default=0, blank=True)
+
+
+    def average_rating(product):
+        all_ratings = Product.objects.filter(product=product)
+        sum = 0
+        for item in all_ratings:
+            sum += item.rating
+        return round(sum/all_ratings.count())
 
 
 class Order(models.Model):
