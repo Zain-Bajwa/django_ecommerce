@@ -10,7 +10,7 @@ views to create, refresh and verify the tokens.
 
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 from .views import (
     AboutView,
     ContactView,
@@ -24,6 +24,7 @@ urlpatterns = [
     path('about/', AboutView.as_view(), name='about-view'),
     path('contact/', ContactView.as_view(), name='contact-view'),
     path('products/', ProductListView.as_view(), name='products-view'),
+     path('api/', include('core.api.urls')),
 ]
 
 if settings.DEBUG:

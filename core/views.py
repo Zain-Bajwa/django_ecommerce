@@ -2,7 +2,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.db.models import Avg, Count, IntegerField
 from django.db.models.functions import Round, Cast
-from authentication.models import Product
+from .models import Product
 
 
 # Create your views here.

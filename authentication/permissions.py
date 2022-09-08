@@ -26,6 +26,9 @@ class OwnProfilePermission(permissions.BasePermission):
             pk = view.kwargs.get('pk')
             if pk:
                 return request.user == User.objects.get(pk=pk)
+            user_id = view.kwargs.get("user_id")
+            if user_id:
+                return request.user == User.objects.get(pk=user_id)
             user_id = request.data.get("user")
             if user_id:
                 return request.user == User.objects.get(pk=user_id)
