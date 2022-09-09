@@ -43,9 +43,9 @@
               {% for product in product_list %}
                 <div class="col-lg-4 col-md-4 all">
                   <div class="product-item">
-                    <a href="#"><img src="{{ product.image.url }}" height="150" alt=""></a>
+                    <a href="{% url 'core:product-view' pk=product.id%}"><img src="{{ product.image.url }}" height="150" alt=""></a>
                     <div class="down-content">
-                      <a href="#"><h4>{{ p.name }}</h4></a>
+                      <a href="{% url 'core:product-view' pk=product.id%}"><h4>{{ product.name }}</h4></a>
                       <h6>${{ product.price }}</h6>
                       <p>
                         {{ product.description }}
@@ -102,10 +102,18 @@
         <div class="inner-content">
           <p>Copyright &copy; 2020 Sixteen Clothing Co., Ltd.
         
-        - Design: <a rel="nofollow noopener" href="https://templatemo.com" target="_blank">TemplateMo</a></p>
+        - Design: <a rel="nofollow noopener" href="#" target="_blank">TemplateMo</a></p>
         </div>
       </div>
     </div>
   </div>
 </footer>
+{% endblock %}
+
+{% block product-list %}
+
+<script>
+
+</script>
+
 {% endblock %}

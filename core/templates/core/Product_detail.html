@@ -1,0 +1,122 @@
+{% extends 'core/layout.html' %}
+
+{% load static %}
+
+{% block title %}Contact{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<section class="h-100 gradient-custom">
+    <div class="container py-5">
+      <div class="row d-flex justify-content-center my-4">
+        <div class="col-md-12">
+          <div class="card mb-4">
+            <div class="card-header py-3">
+              <h5 class="mb-0">{{ product.name }}</h5>
+            </div>
+            <div class="card-body">
+              <!-- Single item -->
+  
+              <!-- Single item -->
+              <div class="row">
+                <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+                  <!-- Image -->
+                
+                    <img src="{{ product.image.url }}" width="348" />
+                    <button class="btn btn-primary mt-2"
+                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                        ADD TO CART
+                    </button>
+                  
+                  <!-- Image -->
+                </div>
+  
+                <div class="col-lg-6 col-md-6 mb-4 mb-lg-0">
+                  <!-- Data -->
+                  <div>
+                    <p class="font-weight-bold" style="margin:0;display:inline;">Category:</p>
+                    <p style="display:inline;">{{ product.category.name }}</p>
+                  </div>
+                  <div>
+                    <p class="font-weight-bold" style="display:inline;">Available:</p>
+                    <p style="display:inline;" id="stock">{{ product.stock }}</p>
+                 </div>
+                  <div>
+                    <p class="font-weight-bold" style="display:inline;">Discription:</p>
+                    <p style="display:inline;">{{ product.description }}</p>
+                </div>
+                </div>
+  
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0 text-center font-weight">
+                  <!-- Quantity -->
+                  <p class="text-start font-weight-normal">
+                    <i class="">Quantity</i>
+                  </p>
+                  <div class="d-flex mb-4" style="max-width: 300px">
+                    <button class="btn btn-primary" id="quantity_minus"
+                      onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                      <i class="fa fa-minus"></i>
+                    </button>
+  
+                    <div class="form-outline">
+                      <input id="intpt_quantity" min="1" name="quantity" onchange="totalPrice(this.value)" max="{{ product.stock }}" value="1" type="number" class="form-control" />
+                      
+                    </div>
+  
+                    <button class="btn btn-primary" id="quantity_plus"
+                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </div>
+                  <!-- Quantity -->
+  
+                  <!-- Price -->
+                  <div>
+                    <p class="text-start font-weight-bold" style="display:inline;">$</p>
+                    <p class="text-start font-weight-bold" id="price" style="display:inline;">{{ product.price }}</p>
+                 </div>
+                  <!-- Price -->
+                </div>
+              </div>
+              <!-- Single item -->
+            </div>
+          </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+<!-- Footer -->
+{% block footer %}
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="inner-content">
+          <p>Copyright &copy; 2020 Sixteen Clothing Co., Ltd.
+        
+        - Design: <a rel="nofollow noopener" href="" target="blank">Betatesting</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+{% endblock %}
+
+{% block javascript_tag %}
+
+<script>
+    $(document).ready(function () {
+        $("#quantity_plus, #quantity_minus, #intpt_quantity").click(function(){
+            stock = parseInt(document.getElementById("stock").innerHTML)
+            quantity = parseInt(document.getElementById("intpt_quantity").value)
+            if (stock > quantity){
+                price = parseInt("{{ product.price }}")
+                document.getElementById("price").innerHTML = quantity * price
+            }
+        });
+      });
+</script>
+
+{% endblock %}

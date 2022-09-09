@@ -13,9 +13,11 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from .views import (
     AboutView,
+    CartView,
     ContactView,
     HomeView,
     ProductListView,
+    ProductDetailView
 )
 
 app_name = 'core'
@@ -24,7 +26,9 @@ urlpatterns = [
     path('about/', AboutView.as_view(), name='about-view'),
     path('contact/', ContactView.as_view(), name='contact-view'),
     path('products/', ProductListView.as_view(), name='products-view'),
-     path('api/', include('core.api.urls')),
+    path('product/<int:pk>', ProductDetailView.as_view(), name='product-view'),
+    path('cart/', CartView.as_view(), name='cart-view'),
+    path('api/', include('core.api.urls')),
 ]
 
 if settings.DEBUG:

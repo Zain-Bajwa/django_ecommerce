@@ -1,7 +1,7 @@
 from django.views.generic.base import TemplateView
-from django.views.generic import ListView
-from django.db.models import Avg, Count, IntegerField
-from django.db.models.functions import Round, Cast
+from django.views.generic import ListView, DetailView
+from django.db.models import Avg, Count
+from django.db.models.functions import Round
 from .models import Product
 
 
@@ -17,6 +17,12 @@ class AboutView(TemplateView):
 class ContactView(TemplateView):
     template_name = "core/contact.html"
 
+class CartView(TemplateView):
+    template_name = "core/Cart.html"
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "core/Product_detail.html"
 
 class ProductListView(ListView):
     template_name = "core/Product_list.html"

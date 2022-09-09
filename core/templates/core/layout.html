@@ -17,8 +17,6 @@
 assets/css/fontawesome.css
 TemplateMo 546 Sixteen Clothing
 
-https://templatemo.com/tm-546-sixteen-clothing
-
 -->
 
     <!-- Additional CSS Files -->
@@ -48,7 +46,7 @@ https://templatemo.com/tm-546-sixteen-clothing
             <img class="rounded-circle z-depth-2" src="{% static 'media/logo/brand.png' %}" width="30" height="30" alt="">
           </a>
         <div class="container">
-          <a class="navbar-brand" href="{% url 'core:home-view' %}"><h2>Sixteen <em>Clothing</em></h2></a>
+          <a class="navbar-brand" href="{% url 'core:home-view' %}"><h2>Sixteen <em>Elo</em></h2></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -152,6 +150,7 @@ https://templatemo.com/tm-546-sixteen-clothing
       }
     </script>
 
+    {% block javascript_tag %} {% endblock %}
 
   </body>
 
