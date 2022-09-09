@@ -18,7 +18,7 @@ from .views import (
     ProductListView,
 )
 
-app_name = 'frontend'
+app_name = 'core'
 urlpatterns = [
     path("home/",HomeView.as_view(), name="home-view"),
     path('about/', AboutView.as_view(), name='about-view'),

@@ -44,30 +44,46 @@ https://templatemo.com/tm-546-sixteen-clothing
     {% block header %}
     <header class="">
       <nav class="navbar navbar-expand-lg">
+          <a class="navbar-brand p-3" href="#">
+            <img class="rounded-circle z-depth-2" src="{% static 'media/logo/brand.png' %}" width="30" height="30" alt="">
+          </a>
         <div class="container">
-          <a class="navbar-brand" href="{% url 'frontend:home-view' %}"><h2>Sixteen <em>Clothing</em></h2></a>
+          <a class="navbar-brand" href="{% url 'core:home-view' %}"><h2>Sixteen <em>Clothing</em></h2></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item{% if request.path == '/home/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'frontend:home-view' %}">Home
+              <li class="nav-item {% block home_active %}{% endblock %}">
+                <a class="nav-link" href="{% url 'core:home-view' %}">Home
                   <span class="sr-only">(current)</span>
                 </a>
               </li> 
-              <li class="nav-item{% if request.path == '/products/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'frontend:products-view' %}">Our Products</a>
+              <li class="nav-item {% block product_active %}{% endblock %}">
+                <a class="nav-link" href="{% url 'core:products-view' %}">Our Products</a>
               </li>
-              <li class="nav-item{% if request.path == '/about/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'frontend:about-view' %}">About Us</a>
+              <li class="nav-item {% block about_active %}{% endblock %}">
+                <a class="nav-link" href="{% url 'core:about-view' %}">About Us</a>
               </li>
-              <li class="nav-item{% if request.path == '/contact/' %} active{% endif %}">
-                <a class="nav-link" href="{% url 'frontend:contact-view' %}">Contact US</a>
+              <li class="nav-item {% block contact_active %}{% endblock %}">
+                <a class="nav-link" href="{% url 'core:contact-view' %}">Contact US</a>
+              </li>
+              <li class="nav-item" id="login">
+                <a class="nav-link" href="{% url 'authentication:login-view' %}">Login</a>
+              </li>
+              <li class="nav-item d-none" id="logout">
+                <a class="nav-link" href="#" onclick="logout()">Logout</a>
               </li>
             </ul>
           </div>
         </div>
+        <div class="pt-0 navbar-collapse">
+          <ul class="pt-0 navbar-nav ml-auto">
+              <li class="nav-item">
+                <span class="pt-0 navbar-text text-light" id="user-name"></span>
+              </li>
+          </ul>
+      </div>
       </nav>
     </header>
     {% endblock %}
@@ -90,7 +106,40 @@ https://templatemo.com/tm-546-sixteen-clothing
     <script src="{% static 'assets/js/accordions.js' %}"></script>
 
     <script>
-        //debugger
+      function logout(){
+        sessionStorage.removeItem("access")
+        sessionStorage.removeItem("refresh")
+        sessionStorage.removeItem("user_id")
+        window.location.href = "{% url 'authentication:login-view' %}"
+      }
+      async function get_user(){
+        
+        const Bearer_access = sessionStorage.access
+        const Bearer_refresh = sessionStorage.refresh
+        const user_id = sessionStorage.user_id
+        
+        const header = new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + Bearer_access
+        });
+        const url = "/auth/user/" + user_id
+        let response = await fetch(url, {
+          method: 'GET',
+          headers: header
+        });
+        
+        data = await response.json()
+        if (response.ok){
+          document.getElementById("login").classList.add("d-none");
+          document.getElementById("logout").classList.remove("d-none");
+          document.getElementById("user-name").innerHTML = "Mr. " + data.username  
+        }
+      }
+
+      $(document).ready(function () {
+        get_user()
+      });
+
     </script>
     <script language = "text/Javascript"> 
       cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field

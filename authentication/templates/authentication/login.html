@@ -65,23 +65,15 @@
         data = await response.json();
         //debugger
         if (response.ok) {
-            //document.getElementById('msg').innerHTML = data.access;
-            document.cookie = "access=" + data.access;
-            document.cookie = "refresh=" + data.refresh;
-            window.location.href = "{% url 'frontend:home-view' %}";
+            sessionStorage.setItem("access", data.access)
+            sessionStorage.setItem("refresh", data.refresh)
+            sessionStorage.setItem("user_id", data.user_id)
+            window.location.href = "{% url 'core:home-view' %}";
             
         } else {
             document.getElementById('msg').innerHTML = data.detail;
         }
-        const Bearer_access = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('access'))
-        .split('=')[1];
-        const Bearer_refresh = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('refresh'))
-        .split('=')[1];
-        //document.cookie = "{ 'access': " + data.access + ", 'refresh': " + data.refresh;
+
     }
 </script>
 
