@@ -3,155 +3,231 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <title>{% block title %}{% endblock %}</title>
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-<!--
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+    rel="stylesheet">
+  <title>{% block title %}{% endblock %}</title>
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!--
 assets/css/fontawesome.css
 TemplateMo 546 Sixteen Clothing
 
 -->
+  <style>
+    .badge:after {
+      content: attr(value);
+      font-size: 16px;
+      color: #fff;
+      background: #F33F3F;
+      border-radius: 50%;
+      padding: 0 1px;
+      position: relative;
+      left: -8px;
+      top: -10px;
+      opacity: 0.9;
+    }
+  </style>
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/templatemo-sixteen.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/templatemo-sixteen.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <!-- ***** Preloader Start ***** -->
-    <div id="preloader">
-        <div class="jumper">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>  
-    <!-- ***** Preloader End ***** -->
+  <!-- ***** Preloader Start ***** -->
+  <div id="preloader">
+    <div class="jumper">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
 
-    <!-- Header -->
-    {% block header %}
-    <header class="">
-      <nav class="navbar navbar-expand-lg">
-          <a class="navbar-brand p-3" href="#">
-            <img class="rounded-circle z-depth-2" src="{% static 'media/logo/brand.png' %}" width="30" height="30" alt="">
-          </a>
-        <div class="container">
-          <a class="navbar-brand" href="{% url 'core:home-view' %}"><h2>Sixteen <em>Elo</em></h2></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item {% block home_active %}{% endblock %}">
-                <a class="nav-link" href="{% url 'core:home-view' %}">Home
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li> 
-              <li class="nav-item {% block product_active %}{% endblock %}">
-                <a class="nav-link" href="{% url 'core:products-view' %}">Our Products</a>
-              </li>
-              <li class="nav-item {% block about_active %}{% endblock %}">
-                <a class="nav-link" href="{% url 'core:about-view' %}">About Us</a>
-              </li>
-              <li class="nav-item {% block contact_active %}{% endblock %}">
-                <a class="nav-link" href="{% url 'core:contact-view' %}">Contact US</a>
-              </li>
-              <li class="nav-item" id="login">
-                <a class="nav-link" href="{% url 'authentication:login-view' %}">Login</a>
-              </li>
-              <li class="nav-item d-none" id="logout">
-                <a class="nav-link" href="#" onclick="logout()">Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="pt-0 navbar-collapse">
-          <ul class="pt-0 navbar-nav ml-auto">
-              <li class="nav-item">
-                <span class="pt-0 navbar-text text-light" id="user-name"></span>
-              </li>
+  <!-- Header -->
+  {% block header %}
+  <header class="">
+    <nav class="navbar navbar-expand-lg">
+      <a class="navbar-brand p-3" href="#">
+        <img class="rounded-circle z-depth-2" src="{% static 'media/logo/brand.png' %}" width="30" height="30" alt="">
+      </a>
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'core:home-view' %}">
+          <h2>Sixteen <em>Elo</em></h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item {% block home_active %}{% endblock %}">
+              <a class="nav-link" href="{% url 'core:home-view' %}">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item {% block product_active %}{% endblock %}">
+              <a class="nav-link" href="{% url 'core:products-view' %}">Our Products</a>
+            </li>
+            <li class="nav-item {% block about_active %}{% endblock %}">
+              <a class="nav-link" href="{% url 'core:about-view' %}">About Us</a>
+            </li>
+            <li class="nav-item {% block contact_active %}{% endblock %}">
+              <a class="nav-link" href="{% url 'core:contact-view' %}">Contact US</a>
+            </li>
+            <li class="nav-item" id="login">
+              <a class="nav-link" href="{% url 'authentication:login-view' %}">Login</a>
+            </li>
+            <li class="nav-item d-none" id="logout">
+              <a class="nav-link" href="#" onclick="logout()">Logout</a>
+            </li>
+            <li class="nav-item active" id="">
+              <span class="fa-stack" data-count="5">
+                <i class="fa badge active" id="cart_count" value=0>&#xf290;</i>
+                <a style="color: #F33F3F" class="fa fa-shopping-cart fa-stack-2x pt-2"
+                  id="cart-count-link" href="javascript:void(0)"></a>
+              </span>
+            </li>
           </ul>
+        </div>
       </div>
-      </nav>
-    </header>
-    {% endblock %}
+      <div class="pt-0 navbar-collapse">
+        <ul class="pt-0 navbar-nav ml-auto">
+          <li class="nav-item">
+            <span class="pt-0 navbar-text text-light" id="user-name"></span>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  {% endblock %}
 
-    <!-- Page Content -->
-    <!-- Banner Starts Here -->
-    {% block content %}{% endblock %}
-    <!-- Footer -->
-    {% block footer %}{% endblock %}
-    <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- Page Content -->
+  <!-- Banner Starts Here -->
+  {% block content %}{% endblock %}
+  <!-- Footer -->
+  {% block footer %}{% endblock %}
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 
-    <!-- Additional Scripts -->
-    <script src="{% static 'assets/js/custom.js' %}"></script>
-    <script src="{% static 'assets/js/owl.js' %}"></script>
-    <script src="{% static 'assets/js/slick.js' %}"></script>
-    <script src="{% static 'assets/js/isotope.js' %}"></script>
-    <script src="{% static 'assets/js/accordions.js' %}"></script>
+  <!-- Additional Scripts -->
+  <script src="{% static 'assets/js/custom.js' %}"></script>
+  <script src="{% static 'assets/js/owl.js' %}"></script>
+  <script src="{% static 'assets/js/slick.js' %}"></script>
+  <script src="{% static 'assets/js/isotope.js' %}"></script>
+  <script src="{% static 'assets/js/accordions.js' %}"></script>
 
-    <script>
-      function logout(){
-        sessionStorage.removeItem("access")
-        sessionStorage.removeItem("refresh")
-        sessionStorage.removeItem("user_id")
-        window.location.href = "{% url 'authentication:login-view' %}"
-      }
-      async function get_user(){
-        
-        const Bearer_access = sessionStorage.access
-        const Bearer_refresh = sessionStorage.refresh
-        const user_id = sessionStorage.user_id
-        
-        const header = new Headers({
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + Bearer_access
-        });
-        const url = "/auth/user/" + user_id
-        let response = await fetch(url, {
-          method: 'GET',
-          headers: header
-        });
-        
-        data = await response.json()
-        if (response.ok){
-          document.getElementById("login").classList.add("d-none");
-          document.getElementById("logout").classList.remove("d-none");
-          document.getElementById("user-name").innerHTML = "Mr. " + data.username  
+  <script>
+    // This function is called to clear session storage when user logout
+    function logout() {
+      sessionStorage.removeItem("access")
+      sessionStorage.removeItem("refresh")
+      sessionStorage.removeItem("user_id")
+      window.location.href = "{% url 'authentication:login-view' %}"
+    }
+
+    function isLogin() {
+      const Bearer_access = sessionStorage.access
+      const Bearer_refresh = sessionStorage.refresh
+      const user_id = sessionStorage.user_id
+      const header = new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + Bearer_access
+      });
+      if ((Bearer_access != undefined) & (Bearer_refresh != undefined) & (user_id != undefined)) {
+        token = {
+          "Bearer_access": Bearer_access,
+          "Bearer_refresh": Bearer_refresh,
+          "user_id": user_id,
+          "header": header
         }
+        return token;
       }
+      else {
+        return false
+      }
+    }
 
-      $(document).ready(function () {
-        get_user()
+    // Gettin the name of the user
+    async function get_user(token) {
+
+      const url = "/auth/user/" + token.user_id
+      let response = await fetch(url, {
+        method: 'GET',
+        headers: token.header
       });
 
-    </script>
-    <script language = "text/Javascript"> 
-      cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
-      function clearField(t){                   //declaring the array outside of the
-      if(! cleared[t.id]){                      // function makes it static and global
-          cleared[t.id] = 1;  // you could use true and false, but that's more typing
-          t.value='';         // with more chance of typos
-          t.style.color='#fff';
-          }
+      data = await response.json()
+      if (response.ok) {
+        document.getElementById("login").classList.add("d-none");
+        document.getElementById("logout").classList.remove("d-none");
+        document.getElementById("user-name").innerHTML = "Mr. " + data.username
       }
-    </script>
+    }
 
-    {% block javascript_tag %} {% endblock %}
+    // Get the number of products in Cat if the user is loged in
+    async function get_cart_count(token) {
 
-  </body>
+      // url for cart-view. We are counting the number of products in Cart of a user 
+      url = "/api/cart/view/" + token.user_id + "/"
+
+      let response = await fetch(url, {
+        method: 'GET',
+        headers: token.header
+      });
+      data = await response.json();
+      if (response.ok) {
+        let counter = 0
+        // get count of products if products are in the cart
+        for ([key, value] of Object.entries(data)) {
+          counter = counter + 1
+        }
+        // Update the cart value and link of cart
+        //debugger
+        url = "/cart/" + token.user_id
+        document.getElementById("cart_count").setAttribute("value", counter)
+        document.getElementById("cart-count-link").href = url
+      }
+    }
+
+    // Document ready function
+    $(document).ready(function () {
+      // Getting the name of user and number of product in the cart if user is logedin
+      //debugger
+      token = isLogin()
+      if (token) {
+        get_user(token)
+
+        get_cart_count(token)
+      }
+
+    });
+
+  </script>
+  <script language="text/Javascript">
+    cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+    function clearField(t) {                   //declaring the array outside of the
+      if (!cleared[t.id]) {                      // function makes it static and global
+        cleared[t.id] = 1;  // you could use true and false, but that's more typing
+        t.value = '';         // with more chance of typos
+        t.style.color = '#fff';
+      }
+    }
+  </script>
+
+  {% block javascript_tag %} {% endblock %}
+
+</body>
 
 </html>

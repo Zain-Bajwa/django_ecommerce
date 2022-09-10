@@ -27,7 +27,7 @@ urlpatterns = [
     path('contact/', ContactView.as_view(), name='contact-view'),
     path('products/', ProductListView.as_view(), name='products-view'),
     path('product/<int:pk>', ProductDetailView.as_view(), name='product-view'),
-    path('cart/', CartView.as_view(), name='cart-view'),
+    path('cart/<int:pk>', CartView.as_view(), name='cart-view'),
     path('api/', include('core.api.urls')),
 ]
 

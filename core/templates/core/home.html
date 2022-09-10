@@ -2,7 +2,10 @@
 
 {% load static %}
 
+{% load filters %}
+
 {% block home_active %}active{% endblock %}
+
 {% block title %}Home{% endblock %}
     <!-- Page Content -->
     <!-- Banner Starts Here -->
@@ -40,114 +43,50 @@
           <a href="{% url 'core:products-view' %}">view all products <i class="fa fa-angle-right"></i></a>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="product-item">
-          <a href="#"><img src="{% static 'assets/images/product_01.jpg' %}" alt=""></a>
-          <div class="down-content">
-            <a href="#"><h4>Tittle goes here</h4></a>
-            <h6>$25.75</h6>
-            <p>Lorem ipsume dolor sit amet, adipisicing elite. Itaque, corporis nulla aspernatur.</p>
-            <ul class="stars">
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-            </ul>
-            <span>Reviews (24)</span>
-          </div>
+      <!-- Products -->
+      <div class="col-md-12">
+        <div class="filters-content">
+            <div class="row grid">
+              {% for product in product_list %}
+                <div class="col-lg-4 col-md-4 all">
+                  <div class="product-item">
+                    <a href="{% url 'core:product-view' pk=product.id%}"><img src="{{ product.image.url }}" height="150" alt=""></a>
+                    <div class="down-content">
+                      <a href="{% url 'core:product-view' pk=product.id%}"><h4>{{ product.name }}</h4></a>
+                      <h6>${{ product.price }}</h6>
+                      <p>
+                        {{ product.description }}
+                      </p>
+
+                      <ul class="stars">
+
+                        {% if product.avg_rating %}
+
+                        {% for i in product.avg_rating|times %}
+                        <li><i class="fa fa-star "></i></li>
+                        {% endfor %}
+                        
+                        {% for i in product.no_rating|times %}
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        {% endfor %}
+                        
+                        {% else %}
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        <li><i class="fa fa-star fa-3x" style="color:gray"></i></li>
+                        {% endif %}
+                      </ul>
+                      <span>Reviews ({{ product.count }})</span>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="product-item">
-          <a href="#"><img src="{% static 'assets/images/product_02.jpg' %}" alt=""></a>
-          <div class="down-content">
-            <a href="#"><h4>Tittle goes here</h4></a>
-            <h6>$30.25</h6>
-            <p>Lorem ipsume dolor sit amet, adipisicing elite. Itaque, corporis nulla aspernatur.</p>
-            <ul class="stars">
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-            </ul>
-            <span>Reviews (21)</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="product-item">
-          <a href="#"><img src="{% static 'assets/images/product_03.jpg' %}" alt=""></a>
-          <div class="down-content">
-            <a href="#"><h4>Tittle goes here</h4></a>
-            <h6>$20.45</h6>
-            <p>Sixteen Clothing is free CSS template provided by TemplateMo.</p>
-            <ul class="stars">
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-            </ul>
-            <span>Reviews (36)</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="product-item">
-          <a href="#"><img src="{% static 'assets/images/product_04.jpg' %}" alt=""></a>
-          <div class="down-content">
-            <a href="#"><h4>Tittle goes here</h4></a>
-            <h6>$15.25</h6>
-            <p>Lorem ipsume dolor sit amet, adipisicing elite. Itaque, corporis nulla aspernatur.</p>
-            <ul class="stars">
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-            </ul>
-            <span>Reviews (48)</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="product-item">
-          <a href="#"><img src="{% static 'assets/images/product_05.jpg' %}" alt=""></a>
-          <div class="down-content">
-            <a href="#"><h4>Tittle goes here</h4></a>
-            <h6>$12.50</h6>
-            <p>Lorem ipsume dolor sit amet, adipisicing elite. Itaque, corporis nulla aspernatur.</p>
-            <ul class="stars">
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-            </ul>
-            <span>Reviews (16)</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="product-item">
-          <a href="#"><img src="{% static 'assets/images/product_06.jpg' %}" alt=""></a>
-          <div class="down-content">
-            <a href="#"><h4>Tittle goes here</h4></a>
-            <h6>$22.50</h6>
-            <p>Lorem ipsume dolor sit amet, adipisicing elite. Itaque, corporis nulla aspernatur.</p>
-            <ul class="stars">
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-            </ul>
-            <span>Reviews (32)</span>
-          </div>
-        </div>
-      </div>
+      <!-- End product section -->
     </div>
   </div>
 </div>
@@ -163,7 +102,7 @@
       <div class="col-md-6">
         <div class="left-content">
           <h4>Looking for the best products?</h4>
-          <p><a rel="nofollow" href="#/tm-546-sixteen-clothing" target="_parent">This template</a> is free to use for your business websites. However, you have no permission to redistribute the downloadable ZIP file on any template collection website. <a rel="nofollow" href="#/contact">Contact us</a> for more info.</p>
+          <p><a rel="nofollow" href="#/tm-546-sixteen-clothing" target="_parent">This app</a> is used for your business websites. However, you have no permission to redistribute the downloadable ZIP file on any collection website. <a rel="nofollow" href="{% url 'core:contact-view' %}">Contact us</a> for more info.</p>
           <ul class="featured-list">
             <li><a href="#">Lorem ipsum dolor sit amet</a></li>
             <li><a href="#">Consectetur an adipisicing elit</a></li>
@@ -171,7 +110,7 @@
             <li><a href="#">Corporis, omnis doloremque</a></li>
             <li><a href="#">Non cum id reprehenderit</a></li>
           </ul>
-          <a href="about.html" class="filled-button">Read More</a>
+          <a href="{% url 'core:about-view' %}" class="filled-button">Read More</a>
         </div>
       </div>
       <div class="col-md-6">
@@ -195,7 +134,7 @@
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque corporis amet elite author nulla.</p>
             </div>
             <div class="col-md-4">
-              <a href="#" class="filled-button">Purchase Now</a>
+              <a href="#" class="filled-button">Betatesting</a>
             </div>
           </div>
         </div>
@@ -214,7 +153,7 @@
         <div class="inner-content">
           <p>Copyright &copy; 2020 Sixteen Clothing Co., Ltd.
         
-        - Design: <a rel="nofollow noopener" href="#" target="_blank">TemplateMo</a></p>
+        - Design: <a rel="nofollow noopener" href="#" target="_blank">Betatesting</a></p>
         </div>
       </div>
     </div>

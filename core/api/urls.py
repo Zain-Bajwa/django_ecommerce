@@ -24,7 +24,7 @@ from .views import (
 )
 
 # pylint: disable=invalid-name
-app_name = 'core_api'
+app_name = 'api'
 router = routers.DefaultRouter()
 
 # For retrieve, update, and delete a Category

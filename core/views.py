@@ -2,12 +2,22 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView, DetailView
 from django.db.models import Avg, Count
 from django.db.models.functions import Round
-from .models import Product
+from .models import Product, Cart
 
 
 # Create your views here.
-class HomeView(TemplateView):
+class HomeView(ListView):
     template_name = "core/home.html"
+    model = Product
+
+    def get_queryset(self):
+
+        queryset = Product.objects.annotate(
+                count=Count('productreview__rating'),
+                avg_rating=Round(Avg('productreview__rating')),
+                no_rating= 5 - Round(Avg('productreview__rating'))
+            )
+        return queryset
 
 
 class AboutView(TemplateView):
@@ -17,8 +27,14 @@ class AboutView(TemplateView):
 class ContactView(TemplateView):
     template_name = "core/contact.html"
 
-class CartView(TemplateView):
+class CartView(ListView):
+    # model = Cart
     template_name = "core/Cart.html"
+
+    def get_queryset(self):
+
+        queryset = Cart.objects.filter(user__id=self.kwargs['pk'])
+        return queryset
 
 class ProductDetailView(DetailView):
     model = Product

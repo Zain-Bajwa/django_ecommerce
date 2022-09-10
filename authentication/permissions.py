@@ -22,19 +22,14 @@ class OwnProfilePermission(permissions.BasePermission):
     def has_permission(self, request, view):
         """Check if the user is related to the token"""
 
+        user_id = view.kwargs.get('pk') or view.kwargs.get("user_id") or \
+            request.data.get("user") or request.query_params.get("user_id")
+
         try:
-            pk = view.kwargs.get('pk')
-            if pk:
-                return request.user == User.objects.get(pk=pk)
-            user_id = view.kwargs.get("user_id")
-            if user_id:
-                return request.user == User.objects.get(pk=user_id)
-            user_id = request.data.get("user")
-            if user_id:
-                return request.user == User.objects.get(pk=user_id)
+            return request.user == User.objects.get(pk=user_id)
         except ObjectDoesNotExist:
                 return False
-        return False
+
 
 
 class IsSuperUser(permissions.BasePermission):
