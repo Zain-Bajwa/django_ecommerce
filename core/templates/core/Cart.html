@@ -6,13 +6,29 @@
 
 <!-- Page Content -->
 {% block content %}
+
+<div style="padding: 1px 0px 0px 0px;" class="page-heading header-text gradient-custom">
+  <div class="container">
+    <div class="text-content">
+      <h4></h4>
+      <h2>Sxteen Elo</h2>
+    </div>
+  </div>
+</div>
+
 <section class="h-100 gradient-custom">
-  <div class="container py-5">
+  <div class="container py-3">
     <div class="row d-flex justify-content-center my-4">
       <div class="col-md-8">
         <div class="card mb-4">
           <div class="card-header py-3">
-            <h5 class="mb-0">Cart items</h5>
+            <h5 class="mb-0">
+              {% if object_list %}
+              Cart items
+              {% else %}
+              Cart is Empty
+              {% endif %}
+            </h5>
           </div>
           <!-- ------------------------------------------------------- -->
           {% for product in object_list %}
@@ -61,15 +77,12 @@
                     title="Remove product" onclick="removeFromCart('{{ product.product.id }}')">
                     <a class="fa fa-trash"></a>
                   </button>
-                  <a type="button" class="btn btn-primary btn-sm mb-2" data-mdb-toggle="tooltip"
-                    title="Edit product" href="{% url 'core:product-view' pk=product.product.id %}">
-                    
-                      <i class="fa fa-edit"></i>
-                  
-                </a>
+                  <a type="button" class="btn btn-primary btn-sm mb-2" data-mdb-toggle="tooltip" title="Edit product"
+                    href="{% url 'core:product-view' pk=product.product.id %}">
+                    <i class="fa fa-edit"></i>
+                  </a>
                 </div>
               </div>
-
             </div>
           </div>
           {% endfor %}
@@ -101,9 +114,8 @@
                 <span><strong id="price-with-tax">$53.98</strong></span>
               </li>
             </ul>
-
-            <button type="button" class="btn btn-primary btn-lg btn-block">
-              Go to checkout
+            <button type="button" class="btn btn-primary btn-lg btn-block" id="place-order">
+              Place your order
             </button>
           </div>
         </div>
@@ -145,21 +157,79 @@
     document.getElementById("price-with-tax").innerHTML = "$" + price
   }
 
-  async function removeFromCart(product_id){
+  $('#place-order').click(async function () {
     token = isLogin()
-    if (token){
+    if (token) {
+      url = "{% url 'core:api:place-order-view' %}" + "?user_id=" + token.user_id
+      //debugger
+      let response = await fetch(url, {
+        method: 'POST',
+        headers: token.header
+      });
+      //debugger
+      if (response.status == 200) {
+        Swal.fire({
+          title: 'Your order ic placed',
+          text: "Go to your profile to track your order",
+          icon: 'success',
+          showCancelButton: true,
+          cancelButtonColor: '#63a43d',
+          confirmButtonColor: '#007bff',
+          confirmButtonText: 'Go to',
+          cancelButtonText: 'later'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "{% url 'core:profile-view' %}"
+          }
+          window.location.reload()
+        })
+      }
+      else if (response.status == 204){
+        Swal.fire({
+          icon: 'warning',
+          title: "Cart is empty",
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          title: "Something went wrong",
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+    }
+    else {
+      window.location.href = "{% url 'authentication:login-view' %}"
+    }
+
+  });
+
+  async function removeFromCart(product_id) {
+    token = isLogin()
+    if (token) {
       const url = "{% url 'core:api:remove-from-cart' %}" + "?user_id=" + token.user_id + "&product_id=" + product_id
       let response = await fetch(url, {
         method: "DELETE",
         headers: token.header
       });
       data = await response.json()
-      if (response.ok){
+      if (response.ok) {
         location.reload()
       }
+      else {
+        Swal.fire({
+          icon: 'error',
+          title: data.detail,
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
     }
-    else{
-
+    else {
+      window.location.href = "{% url 'authentication:login-view' %}"
     }
   }
   $(document).ready(function () {

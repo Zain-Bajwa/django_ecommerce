@@ -387,14 +387,17 @@ class OrderPlaceView(generics.GenericAPIView):
                         {"message": "Order placed"}, status=status.HTTP_200_OK
                     )
                 return Response(
-                    {"message": "Cart is empty"}, status=status.HTTP_200_OK
+                    {"message": "Cart is empty"},
+                    status=status.HTTP_204_NO_CONTENT
                 )
             return Response(
-                {"message": "Not a valid User"}, status=status.HTTP_200_OK
+                {"message": "Not a valid User"},
+                status=status.HTTP_401_UNAUTHORIZED
             )
         except:
             return Response(
-                {"message": "Something went wrong"}, status=status.HTTP_200_OK
+                {"message": "Something went wrong"},
+                status=status.HTTP_406_NOT_ACCEPTABLE
             )
 
 

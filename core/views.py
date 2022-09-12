@@ -24,11 +24,15 @@ class AboutView(TemplateView):
     template_name = "core/about.html"
 
 
+class ProfileView(TemplateView):
+    template_name = "core/Profile.html"
+
+
 class ContactView(TemplateView):
     template_name = "core/contact.html"
 
 class CartView(ListView):
-    # model = Cart
+    model = Cart
     template_name = "core/Cart.html"
 
     def get_queryset(self):

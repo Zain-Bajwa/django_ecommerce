@@ -17,7 +17,8 @@ from .views import (
     ContactView,
     HomeView,
     ProductListView,
-    ProductDetailView
+    ProductDetailView,
+    ProfileView,
 )
 
 app_name = 'core'
@@ -28,6 +29,7 @@ urlpatterns = [
     path('products/', ProductListView.as_view(), name='products-view'),
     path('product/<int:pk>', ProductDetailView.as_view(), name='product-view'),
     path('cart/<int:pk>', CartView.as_view(), name='cart-view'),
+    path('profile/', ProfileView.as_view(), name='profile-view'),
     path('api/', include('core.api.urls')),
 ]
 

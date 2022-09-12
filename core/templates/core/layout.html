@@ -32,6 +32,16 @@ TemplateMo 546 Sixteen Clothing
       top: -10px;
       opacity: 0.9;
     }
+    .gradient-custom {
+      /* fallback for old browsers */
+      background: #F33F3F;
+      
+      /* Chrome 10-25, Safari 5.1-6 */
+      background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), #F33F3F);
+      
+      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      background: linear-gradient(to right, rgba(106, 17, 203, 1), #F33F3F)
+      }
   </style>
 
   <!-- Additional CSS Files -->
@@ -93,8 +103,8 @@ TemplateMo 546 Sixteen Clothing
             <li class="nav-item active" id="">
               <span class="fa-stack" data-count="5">
                 <i class="fa badge active" id="cart_count" value=0>&#xf290;</i>
-                <a style="color: #F33F3F" class="fa fa-shopping-cart fa-stack-2x pt-2"
-                  id="cart-count-link" href="javascript:void(0)"></a>
+                <a style="color: #F33F3F" class="fa fa-shopping-cart fa-stack-2x pt-2" id="cart-count-link"
+                  href="javascript:void(0)"></a>
               </span>
             </li>
           </ul>
@@ -102,8 +112,16 @@ TemplateMo 546 Sixteen Clothing
       </div>
       <div class="pt-0 navbar-collapse">
         <ul class="pt-0 navbar-nav ml-auto">
-          <li class="nav-item">
-            <span class="pt-0 navbar-text text-light" id="user-name"></span>
+          <a class="py-2" href="{% url 'core:profile-view' %}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
+              class="bi bi-person-circle" viewBox="0 0 16 16">
+              <path style="color: #F33F3F;" d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+              <path style="color: #F33F3F;" fill-rule="evenodd"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+            </svg>
+          </a>
+          <li style="margin-left: 0px;" class="nav-item">
+            <a class="nav-link" id="user-name"></a>
           </li>
         </ul>
       </div>
@@ -119,6 +137,7 @@ TemplateMo 546 Sixteen Clothing
   <!-- Bootstrap core JavaScript -->
   <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.32/dist/sweetalert2.all.min.js"></script>
 
 
   <!-- Additional Scripts -->
@@ -160,7 +179,7 @@ TemplateMo 546 Sixteen Clothing
     }
 
     // Gettin the name of the user
-    async function get_user(token) {
+    async function getUser(token) {
 
       const url = "/auth/user/" + token.user_id
       let response = await fetch(url, {
@@ -177,7 +196,7 @@ TemplateMo 546 Sixteen Clothing
     }
 
     // Get the number of products in Cat if the user is loged in
-    async function get_cart_count(token) {
+    async function getCartCount(token) {
 
       // url for cart-view. We are counting the number of products in Cart of a user 
       url = "/api/cart/view/" + token.user_id + "/"
@@ -201,15 +220,19 @@ TemplateMo 546 Sixteen Clothing
       }
     }
 
+    function userProfile(){
+
+    }
+
     // Document ready function
     $(document).ready(function () {
       // Getting the name of user and number of product in the cart if user is logedin
       //debugger
       token = isLogin()
       if (token) {
-        get_user(token)
+        getUser(token)
 
-        get_cart_count(token)
+        getCartCount(token)
       }
 
     });
