@@ -105,8 +105,18 @@ class CreateTokenView(TokenViewBase):
 
 
 class LoginView(TemplateView):
+    """LoginView
+
+    This view is used to login a user by providing username and Password.
+    """
+
     template_name = "authentication/login.html"
 
 
 class RegisterView(TemplateView):
+    """RegisterView
+
+    This view is used to register a user by providing username Password and
+    confirm_password.
+    """
     template_name = "authentication/register.html"

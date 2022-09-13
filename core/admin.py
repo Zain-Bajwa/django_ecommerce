@@ -1,5 +1,10 @@
-from django.contrib import admin
+"""Admin Panel URL Configuration for Core App
 
+This file contains all the URLs of the admin panel. This file is used to
+connect the URLs to the views.
+"""
+
+from django.contrib import admin
 from .models import Product, Category, Order, Cart
 
 

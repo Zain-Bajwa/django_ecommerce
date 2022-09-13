@@ -20,3 +20,7 @@ jobs:
       run: |
         pylint --ignore-paths=authentication/migrations ./authentication 
         pylint --ignore-paths=authentication/migrations ./django_ecommerce
+    - name: Run Pycodestyle
+      run: |
+        pycodestyle --exclude=authentication/migrations ./authentication
+        pycodestyle --exclude=core/migrations ./core

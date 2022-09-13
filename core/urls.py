@@ -16,20 +16,27 @@ from .views import (
     CartView,
     ContactView,
     HomeView,
+    OrderListView,
+    OrderDetailView,
     ProductListView,
     ProductDetailView,
     ProfileView,
 )
 
+# pylint: disable=invalid-name
 app_name = 'core'
 urlpatterns = [
-    path("home/",HomeView.as_view(), name="home-view"),
+    path("home/", HomeView.as_view(), name="home-view"),
     path('about/', AboutView.as_view(), name='about-view'),
     path('contact/', ContactView.as_view(), name='contact-view'),
     path('products/', ProductListView.as_view(), name='products-view'),
-    path('product/<int:pk>', ProductDetailView.as_view(), name='product-view'),
+    path('product/<int:pk>', ProductDetailView.as_view(),
+         name='product-detail-view'),
     path('cart/<int:pk>', CartView.as_view(), name='cart-view'),
     path('profile/', ProfileView.as_view(), name='profile-view'),
+    path('orders/<int:pk>', OrderListView.as_view(), name='order-view'),
+    path('order/<int:pk>', OrderDetailView.as_view(),
+         name='order-detail-view'),
     path('api/', include('core.api.urls')),
 ]
 

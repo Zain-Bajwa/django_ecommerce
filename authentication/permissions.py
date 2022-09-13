@@ -28,8 +28,7 @@ class OwnProfilePermission(permissions.BasePermission):
         try:
             return request.user == User.objects.get(pk=user_id)
         except ObjectDoesNotExist:
-                return False
-
+            return False
 
 
 class IsSuperUser(permissions.BasePermission):

@@ -78,7 +78,7 @@
                     <a class="fa fa-trash"></a>
                   </button>
                   <a type="button" class="btn btn-primary btn-sm mb-2" data-mdb-toggle="tooltip" title="Edit product"
-                    href="{% url 'core:product-view' pk=product.product.id %}">
+                    href="{% url 'core:product-detail-view' pk=product.product.id %}">
                     <i class="fa fa-edit"></i>
                   </a>
                 </div>
@@ -133,9 +133,9 @@
     <div class="row">
       <div class="col-md-12">
         <div class="inner-content">
-          <p>Copyright &copy; 2020 Sixteen Clothing Co., Ltd.
-
-            - Design: <a rel="nofollow noopener" href="#" target="_blank">Betatesting</a></p>
+          <p>Copyright &copy; 2020.
+        
+        - Design: <a rel="nofollow noopener" href="#" target="_blank">Betatesting</a></p>
         </div>
       </div>
     </div>
@@ -169,7 +169,7 @@
       //debugger
       if (response.status == 200) {
         Swal.fire({
-          title: 'Your order ic placed',
+          title: 'Your order is placed',
           text: "Go to your profile to track your order",
           icon: 'success',
           showCancelButton: true,

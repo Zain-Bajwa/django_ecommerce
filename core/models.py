@@ -62,18 +62,21 @@ class ProductReview(models.Model):
     """
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=False)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, blank=False, null=True)
 
     review = models.CharField(max_length=256, default='', blank=True)
-    rating  = models.IntegerField(default=0, blank=True)
+    rating = models.IntegerField(default=0, blank=True)
 
-
-    def average_rating(product):
-        all_ratings = Product.objects.filter(product=product)
-        sum = 0
-        for item in all_ratings:
-            sum += item.rating
-        return round(sum/all_ratings.count())
+    # pylint: disable=no-member
+    def average_rating(self, product):
+        """Average Rating of a product
+        """
+        all_rating = Product.objects.filter(product=product)
+        rating_sum = 0
+        for rating_ in all_rating:
+            rating_sum += rating_.rating
+        return round(rating_sum/all_rating.count())
 
 
 class Order(models.Model):

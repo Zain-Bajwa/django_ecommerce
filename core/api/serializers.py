@@ -11,6 +11,7 @@ from core.models import (
     Cart, Category, Order, OrderItem, Product, ProductReview
 )
 
+
 class CategoryViewSerializer(ModelSerializer):
     """Category View Serializer
 
@@ -66,7 +67,6 @@ class ReviewSerializer(ModelSerializer):
         model = ProductReview
         fields = ['product', 'user', 'review', 'rating']
         REQUIRED_FIELD = ['product', 'user']
-
 
 
 class CartSerializer(ModelSerializer):

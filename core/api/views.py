@@ -26,7 +26,7 @@ from .serializers import (
 )
 from authentication.models import User
 from core.models import (Category, Product, Cart, Order,
-    OrderItem, ProductReview)
+                         OrderItem, ProductReview)
 from authentication.permissions import OwnProfilePermission
 
 
@@ -141,7 +141,7 @@ class CreateReviewView(generics.ListAPIView):
     """Create Review View"""
 
     authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated, OwnProfilePermission]
+    permission_classes = [IsAuthenticated, OwnProfilePermission]
     queryset = ProductReview.objects.all()
     serializer_class = ReviewSerializer
     # lookup_field = "pk"
@@ -168,7 +168,8 @@ class CreateReviewView(generics.ListAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         else:
-            product_review = ProductReview.objects.filter(user=user, product=product)
+            product_review = ProductReview.objects.filter(user=user,
+                                                          product=product)
             product_review.update(
                 review=review,
                 rating=rating
@@ -241,8 +242,7 @@ class AddToCartView(generics.ListAPIView):
             serializer = self.serializer_class(instence, many=True)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        except:
+        except Exception:
             return Response(
                 {"message": "Something went wrong"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -312,9 +312,8 @@ class RemoveFromCartView(generics.ListAPIView):
             if (
                 Cart.objects.filter(
                         user__id=int(user_id), product__id=int(product_id)
-                    )
-                    .delete()[0] > 0
-                ):
+                        ).delete()[0] > 0
+                    ):
                 return Response(
                     {"message": "Product removed from cart"},
                     status=status.HTTP_200_OK,
@@ -341,7 +340,6 @@ class OrderPlaceView(generics.GenericAPIView):
     order is placed and the success message is returned.
     """
 
-    # pylint: disable=bare-except
     def post(self, request):
         """Place an order"""
 
@@ -394,7 +392,7 @@ class OrderPlaceView(generics.GenericAPIView):
                 {"message": "Not a valid User"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
-        except:
+        except Exception:
             return Response(
                 {"message": "Something went wrong"},
                 status=status.HTTP_406_NOT_ACCEPTABLE
