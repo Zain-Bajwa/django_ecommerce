@@ -13,7 +13,7 @@ jobs:
         pip install -r requirements.txt
     - name: Run django test
       env:
-        GITHUB_TOKEN: ${{ secrets.DJANGO_ECOMMERCE_SECRET }}
+        SECRET_KEY: ${{ secrets.DJANGO_ECOMMERCE_SECRET }}
       run: |
         python manage.py test
     - name: Run pylint
