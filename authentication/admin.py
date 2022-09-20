@@ -9,6 +9,6 @@ create, refresh and verify the tokens.
 
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
-from .models import User
+from authentication.models import User
 
 admin.site.register(User, UserAdmin)

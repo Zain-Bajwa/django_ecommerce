@@ -26,9 +26,9 @@ from .serializers import (
     CreateTokneSerialzer,
 
 )
-from .models import User
+from authentication.models import User
 
-from .permissions import OwnProfilePermission, IsSuperUser
+from authentication.permissions import OwnProfilePermission, IsSuperUser
 
 
 class UserRegisterView(generics.GenericAPIView):

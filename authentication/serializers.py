@@ -10,7 +10,7 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import User
+from authentication.models import User
 
 
 # pylint: disable=too-few-public-methods

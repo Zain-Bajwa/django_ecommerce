@@ -8,7 +8,7 @@ which API user can access. Two permissions are defined in this module:
 
 from rest_framework import permissions
 from django.core.exceptions import ObjectDoesNotExist
-from .models import User
+from authentication.models import User
 
 
 class OwnProfilePermission(permissions.BasePermission):

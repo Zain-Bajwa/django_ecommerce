@@ -7,7 +7,7 @@ user registeration and other for getting JWT Token with username and password.
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.urls import reverse
-from .models import User
+from authentication.models import User
 
 
 class RegistrationTestCase(APITestCase):

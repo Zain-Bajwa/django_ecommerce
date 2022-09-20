@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'authentication/layout.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %}Register{% endblock %}
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-    <!-- <title>{% block title %}{% endblock %}</title> -->
-
-</head>
-
-<body class="bg-light">
+<!-- Page Content -->
+{% block content %}
 
     <div class="container">
         <div class="mx-auto bg-light p-3" style="width: 400px;">
@@ -68,33 +58,13 @@
 
         </div>
     </div>
-</body>
+    {% endblock %}
+
+    {% block javascript_tag %}
 
 <script>
 
-    async function login(data) {
-        //debugger
-        let response = await fetch("{% url 'authentication:create-token' %}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        data = await response.json();
-
-        if (response.ok) {
-            sessionStorage.setItem("access", data.access)
-            sessionStorage.setItem("refresh", data.refresh)
-            sessionStorage.setItem("user_id", data.user_id)
-            window.location.href = "{% url 'core:home-view' %}";
-
-        } else {
-            document.getElementById('msg').innerHTML = data.detail;
-        }
-    }
-
-    function clear_all_msg() {
+    function clearAllErrorMsg() {
         document.getElementById('msg-username').innerHTML = "";
         document.getElementById('msg-password').innerHTML = "";
         document.getElementById('msg-confirm-password').innerHTML = "";
@@ -104,8 +74,7 @@
 
     async function register() {
 
-        clear_all_msg();
-        //debugger
+        clearAllErrorMsg();
         let username = document.getElementById('username').value;
         let password = document.getElementById('password').value;
         let confirmPassword = document.getElementById('confirm-password').value;
@@ -127,7 +96,6 @@
             login({ "username": username, "password": password })
 
         } else {
-            //debugger
             if (data.username) {
                 document.getElementById('msg-username').innerHTML = data.username;
             }
@@ -141,13 +109,4 @@
     }
 
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
-    crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-    integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-
-</html>
+{% endblock %}

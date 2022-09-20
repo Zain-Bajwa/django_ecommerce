@@ -26,7 +26,7 @@ from .views import (
 # pylint: disable=invalid-name
 app_name = 'core'
 urlpatterns = [
-    path("home/", HomeView.as_view(), name="home-view"),
+    path("", HomeView.as_view(), name="home-view"),
     path('about/', AboutView.as_view(), name='about-view'),
     path('contact/', ContactView.as_view(), name='contact-view'),
     path('products/', ProductListView.as_view(), name='products-view'),

@@ -13,7 +13,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
-from .views import (
+from authentication.views import (
     AllUserViewSet,
     CreateTokenView,
     UserRegisterView,
