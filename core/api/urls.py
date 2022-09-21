@@ -7,7 +7,7 @@ Token authentication to access the views.
 
 from django.urls import path
 from rest_framework import routers
-from .views import (
+from core.api.views import (
     AddToCartView,
     AllProductViewSet,
     AllCategoryViewSet,

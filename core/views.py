@@ -11,7 +11,7 @@ from django.views.generic import ListView, DetailView
 from django.db.models import Avg, Count
 from django.db.models.functions import Round
 from authentication.models import User
-from .models import Product, Cart, Order, OrderItem
+from core.models import Product, Cart, Order, OrderItem
 
 
 # pylint: disable=no-member

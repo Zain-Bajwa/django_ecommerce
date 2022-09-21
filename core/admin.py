@@ -5,7 +5,7 @@ connect the URLs to the views.
 """
 
 from django.contrib import admin
-from .models import Product, Category, Order, Cart
+from core.models import Product, Category, Order, Cart
 
 
 admin.site.register(Category)

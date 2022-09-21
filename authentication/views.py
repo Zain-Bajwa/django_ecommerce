@@ -20,15 +20,14 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenViewBase
 from django.views.generic.base import TemplateView
-from .serializers import (
+from authentication.serializers import (
     UserRegisterSerializer,
     UserViewSerializer,
     CreateTokneSerialzer,
 
 )
-from authentication.models import User
-
 from authentication.permissions import OwnProfilePermission, IsSuperUser
+from authentication.models import User
 
 
 class UserRegisterView(generics.GenericAPIView):

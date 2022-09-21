@@ -17,7 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .serializers import (
+from core.api.serializers import (
     ReviewSerializer,
     CategoryViewSerializer,
     CartSerializer,

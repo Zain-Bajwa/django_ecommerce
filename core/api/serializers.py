@@ -12,6 +12,7 @@ from core.models import (
 )
 
 
+# pylint: disable=too-few-public-methods
 class CategoryViewSerializer(ModelSerializer):
     """Category View Serializer
 
