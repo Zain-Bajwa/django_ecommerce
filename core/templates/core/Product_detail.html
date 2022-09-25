@@ -1,0 +1,164 @@
+{% extends 'core/layout.html' %}
+
+{% load static %}
+
+{% block title %}Contact{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+
+<div style="padding: 1px 0px 0px 0px;" class="page-heading header-text gradient-custom">
+  <div class="container">
+    <div class="text-content">
+      <h4></h4>
+      <h2>Sxteen Elo</h2>
+    </div>
+  </div>
+</div>
+<section class="h-100 gradient-custom">
+  <div class="container py-3">
+    <div class="row d-flex justify-content-center my-4">
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">{{ product.name }}</h5>
+          </div>
+          <div class="card-body">
+            <!-- Single item -->
+
+            <!-- Single item -->
+            <div class="row">
+              <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+                <!-- Image -->
+
+                <img src="{{ product.image.url }}" width="348" />
+                <a class="btn btn-primary text-white mt-2" id="continue-hopping" href="{% url 'core:products-view' %}">
+                  Continue Shopping
+                </a>
+                <button class="btn btn-primary mt-2" id="add-to-cart">
+                  ADD TO CART
+                </button>
+
+                <!-- Image -->
+              </div>
+
+              <div class="col-lg-6 col-md-6 mb-4 mb-lg-0">
+                <!-- Data -->
+                <div>
+                  <p class="font-weight-bold" style="margin:0;display:inline;">Category:</p>
+                  <p style="display:inline;">{{ product.category.name }}</p>
+                </div>
+                <div>
+                  <p class="font-weight-bold" style="display:inline;">Available:</p>
+                  <p style="display:inline;" id="stock">{{ product.stock }}</p>
+                </div>
+                <div>
+                  <p class="font-weight-bold" style="display:inline;">Discription:</p>
+                  <p style="display:inline;">{{ product.description }}</p>
+                </div>
+              </div>
+
+              <div class="col-lg-2 col-md-6 mb-4 mb-lg-0 text-center font-weight">
+                <!-- Quantity -->
+                <p class="text-start font-weight-normal">
+                  <i class="">Quantity</i>
+                </p>
+                <div class="d-flex mb-4" style="max-width: 300px">
+                  <button class="btn btn-primary" id="quantity-minus"
+                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                    <i class="fa fa-minus"></i>
+                  </button>
+
+                  <div class="form-outline">
+                    <input id="input-quantity" min="1" name="quantity" onchange="totalPrice(this.value)"
+                      max="{{ product.stock }}" value="1" type="number" class="form-control" />
+
+                  </div>
+
+                  <button class="btn btn-primary" id="quantity-plus"
+                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+                <!-- Quantity -->
+
+                <!-- Price -->
+                <div>
+                  <p class="text-start font-weight-bold" style="display:inline;">$</p>
+                  <p class="text-start font-weight-bold" id="price" style="display:inline;">{{ product.price }}</p>
+                </div>
+                <!-- Price -->
+              </div>
+            </div>
+            <!-- Single item -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block javascript_tag %}
+
+<script>
+  $(document).ready(function () {
+    $("#quantity-plus, #quantity-minus, #intpt-quantity").click(function () {
+      stock = parseInt(document.getElementById("stock").innerHTML)
+      quantity = parseInt(document.getElementById("input-quantity").value)
+      if (stock > quantity) {
+        price = parseInt("{{ product.price }}")
+        document.getElementById("price").innerHTML = quantity * price
+      }
+    });
+
+    $('#add-to-cart').click(async function () {
+      token = isLogin()
+      if (token) {
+        const url = "{% url 'core:api:add-to-cart' %}"
+
+        //debugger
+        product_id = parseInt("{{ product.id }}")
+        let data = {
+          user: parseInt(token.user_id),
+          product: product_id,
+          quantity: parseInt(document.getElementById("input-quantity").value)
+        };
+        //debugger
+        let response = await fetch(url, {
+          method: 'POST',
+          headers: token.header,
+          body: JSON.stringify(data)
+        });
+        data = await response.json();
+
+        if (response.ok) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Product is added to your Cart',
+            showConfirmButton: false,
+            timer: 2000
+          })
+          getCartCount(token)
+        }
+        else if (response.status == 401) {
+          window.location.href = "{% url 'authentication:login-view' %}"
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: data.detail,
+            showConfirmButton: false,
+            timer: 2000
+          })
+        }
+      }
+      else {
+        window.location.href = "{% url 'authentication:login-view' %}"
+      }
+
+    });
+  });
+</script>
+
+{% endblock %}

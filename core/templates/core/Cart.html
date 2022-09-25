@@ -1,0 +1,228 @@
+{% extends 'core/layout.html' %}
+
+{% load static %}
+
+{% block title %}Shopping Cart{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+
+<div style="padding: 1px 0px 0px 0px;" class="page-heading header-text gradient-custom">
+  <div class="container">
+    <div class="text-content">
+      <h4></h4>
+      <h2>Sxteen Elo</h2>
+    </div>
+  </div>
+</div>
+
+<section class="h-100 gradient-custom">
+  <div class="container py-3">
+    <div class="row d-flex justify-content-center my-4">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">
+              {% if object_list %}
+              Cart items
+              {% else %}
+              Cart is Empty
+              {% endif %}
+            </h5>
+          </div>
+          <!-- ------------------------------------------------------- -->
+          {% for product in object_list %}
+          <div class="card mb-4">
+            <div class="card-body">
+
+              <!-- Single item -->
+              <div class="row">
+                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                  <!-- Image -->
+                  <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                    <img src="{{ product.product.image.url }}" class="w-100" />
+                    <a href="#!">
+                      <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                    </a>
+                  </div>
+                  <!-- Image -->
+                </div>
+
+                <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                  <!-- Data -->
+                  <div>
+                    <p class="font-weight-bold" style="margin:0;display:inline;">Name:</p>
+                    <p style="display:inline;">{{ product.product.name }}</p>
+                  </div>
+                  <div>
+                    <p class="font-weight-bold" style="display:inline;">Quantity:</p>
+                    <p style="display:inline;" id="stock">{{ product.quantity }}</p>
+                  </div>
+                  <div>
+                    <p class="font-weight-bold" style="display:inline;">Discription:</p>
+                    <p style="display:inline;">{{ product.product.description }}</p>
+                  </div>
+                  <div>
+                    <p class="font-weight-bold" style="display:inline;">Price:</p>
+                    <p style="display:inline;">
+                      <span> <strong>$</strong><strong name="price">{{ product.price }}</strong></span>
+                    </p>
+                  </div>
+                  <!-- Data -->
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 text-center font-weight">
+                  <!-- Quantity -->
+                  <button type="button" class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                    title="Remove product" onclick="removeFromCart('{{ product.product.id }}')">
+                    <a class="fa fa-trash"></a>
+                  </button>
+                  <a type="button" class="btn btn-primary btn-sm mb-2" data-mdb-toggle="tooltip" title="Edit product"
+                    href="{% url 'core:product-detail-view' pk=product.product.id %}">
+                    <i class="fa fa-edit"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <!--  ------------------------------------------------------------------------------ -->
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Summary</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                Products
+                <span id="total-price"></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Shipping
+                <span>Gratis</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                <div>
+                  <strong>Total amount</strong>
+                  <strong>
+                    <p class="mb-0">(including VAT)</p>
+                  </strong>
+                </div>
+                <span><strong id="price-with-tax">$53.98</strong></span>
+              </li>
+            </ul>
+            <button type="button" class="btn btn-primary btn-lg btn-block" id="place-order">
+              Place your order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block javascript_tag %}
+
+<script>
+  // Get total price of products
+  function totalPrice() {
+    let price = 0
+    const elems = document.getElementsByName("price");
+    const elemsLength = elems.length;
+    for (let i = 0; i < elemsLength; i++) {
+      price = price + parseInt(elems[i].innerHTML)
+    }
+    document.getElementById("total-price").innerHTML = "$" + price
+    document.getElementById("price-with-tax").innerHTML = "$" + price
+  }
+
+  // Place your order
+  $('#place-order').click(async function () {
+    token = isLogin()
+    if (token) {
+      url = "{% url 'core:api:place-order-view' %}" + "?user_id=" + token.user_id
+      //debugger
+      let response = await fetch(url, {
+        method: 'POST',
+        headers: token.header
+      });
+      //debugger
+      if (response.status == 200) {
+        Swal.fire({
+          title: 'Your order is placed',
+          text: "Go to your profile to track your order",
+          icon: 'success',
+          showCancelButton: true,
+          cancelButtonColor: '#63a43d',
+          confirmButtonColor: '#007bff',
+          confirmButtonText: 'Go to',
+          cancelButtonText: 'later'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "{% url 'core:profile-view' %}";
+          }
+          else {
+            window.location.reload()
+          }
+        })
+      }
+      else if (response.status == 204) {
+        Swal.fire({
+          icon: 'warning',
+          title: "Cart is empty",
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          title: "Something went wrong",
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+    }
+    else {
+      window.location.href = "{% url 'authentication:login-view' %}"
+    }
+
+  });
+
+  async function removeFromCart(product_id) {
+    token = isLogin()
+    if (token) {
+      const url = "{% url 'core:api:remove-from-cart' %}" + "?user_id=" + token.user_id + "&product_id=" + product_id
+      let response = await fetch(url, {
+        method: "DELETE",
+        headers: token.header
+      });
+      data = await response.json()
+      if (response.ok) {
+        location.reload()
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+          title: data.detail,
+          showConfirmButton: false,
+          timer: 2000
+        })
+      }
+    }
+    else {
+      window.location.href = "{% url 'authentication:login-view' %}"
+    }
+  }
+  $(document).ready(function () {
+    if (isLogin) {
+      totalPrice()
+    }
+  });
+</script>
+{% endblock %}

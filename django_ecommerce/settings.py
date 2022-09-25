@@ -20,19 +20,11 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '/')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "frontend/static"),
-)
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'frontend/media')
-MEDIA_URL = 'media/'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('GITHUB_TOKEN')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'TRUE'
@@ -53,7 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'authentication',
-    'frontend',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -71,7 +63,7 @@ ROOT_URLCONF = 'django_ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,6 +129,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '/')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "core/static"),
+    os.path.join(BASE_DIR, 'core/templates/core')
+)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'core/static/media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -151,7 +151,7 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+   "ACCESS_TOKEN_LIFETIME": timedelta(hours=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
