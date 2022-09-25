@@ -22,7 +22,7 @@
       <div class="col-md-8">
         <div class="card mb-4">
           <div class="card-header py-3">
-            <a class="btn btn-primary text-white mt-2" id="cart-count-link" href="{% url 'core:order-view' pk=user.id %}">
+            <a class="btn btn-primary text-white mt-2" id="order-detail" href="">
               ❮ Back to Order
             </a>
             <h5 class="mb-0 text-center">
@@ -91,33 +91,18 @@
 
 {% endblock %}
 
-<!-- Footer -->
-{% block footer %}
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="inner-content">
-          <p>Copyright &copy; 2020.
-        
-        - Design: <a rel="nofollow noopener" href="#" target="_blank">Betatesting</a></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-{% endblock %}
-
 {% block javascript_tag %}
 
 <script>
-  // Get total price of products
 
-
-  $(document).ready(function () {
-    if (isLogin) {
-      //totalPrice()
+  $(document).ready(function(){
+    token = isLogin()
+    if (token){
+        url = "/orders/" + token.user_id
+        document.getElementById("order-detail").href = url
     }
-  });
+
+});
+
 </script>
 {% endblock %}

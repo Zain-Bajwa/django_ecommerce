@@ -42,6 +42,8 @@
                         <b>Profile</b></a>
                 </div>
                 <div class="col-lg-3 text-center">
+                    <!-- href will be set by $(document).ready(function) because we have to get user id
+                    to make url -->
                     <a class="text-decoration-none text-secondary" id="order-detail" href=""><b>Order
                             Detail</b></a>
                 </div>
@@ -97,35 +99,18 @@
 
 {% endblock %}
 
-<!-- Footer -->
-{% block footer %}
-<footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="inner-content">
-            <p>Copyright &copy; 2020.
-          
-          - Design: <a rel="nofollow noopener" href="#" target="_blank">Betatesting</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-{% endblock %}
-
-
 {% block javascript_tag %}
 
 <script>
+    // Making url when document is ready.
     $(document).ready(function(){
         token = isLogin()
         if (token){
             url = "/orders/" + token.user_id
             document.getElementById("order-detail").href = url
         }
+    });
 
-    })
 </script>
 
 {% endblock %}

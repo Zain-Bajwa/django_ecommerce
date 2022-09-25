@@ -126,37 +126,22 @@
 
 {% endblock %}
 
-<!-- Footer -->
-{% block footer %}
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="inner-content">
-          <p>Copyright &copy; 2020.
-        
-        - Design: <a rel="nofollow noopener" href="#" target="_blank">Betatesting</a></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-{% endblock %}
-
 {% block javascript_tag %}
 
 <script>
   // Get total price of products
   function totalPrice() {
-    var price = 0
-    var elems = document.getElementsByName("price");
-    for (var i = 0; i < elems.length; i++) {
+    let price = 0
+    const elems = document.getElementsByName("price");
+    const elemsLength = elems.length;
+    for (let i = 0; i < elemsLength; i++) {
       price = price + parseInt(elems[i].innerHTML)
     }
     document.getElementById("total-price").innerHTML = "$" + price
     document.getElementById("price-with-tax").innerHTML = "$" + price
   }
 
+  // Place your order
   $('#place-order').click(async function () {
     token = isLogin()
     if (token) {
@@ -179,12 +164,14 @@
           cancelButtonText: 'later'
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.href = "{% url 'core:profile-view' %}"
+            window.location.href = "{% url 'core:profile-view' %}";
           }
-          window.location.reload()
+          else {
+            window.location.reload()
+          }
         })
       }
-      else if (response.status == 204){
+      else if (response.status == 204) {
         Swal.fire({
           icon: 'warning',
           title: "Cart is empty",

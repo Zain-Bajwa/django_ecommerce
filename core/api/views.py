@@ -340,6 +340,9 @@ class OrderPlaceView(generics.GenericAPIView):
     order is placed and the success message is returned.
     """
 
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, OwnProfilePermission]
+
     def post(self, request):
         """Place an order"""
 
@@ -408,6 +411,8 @@ class OrderDetailView(generics.ListAPIView):
     returned.
     """
 
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, OwnProfilePermission]
     serializer_class = OrderDetailSerializer
 
     def get_queryset(self):

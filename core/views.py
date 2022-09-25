@@ -61,14 +61,6 @@ class OrderDetailView(ListView):
     model = OrderItem
     template_name = "core/Order_detail.html"
 
-    def get_context_data(self, **kwargs):
-        """Override the get_context_data() function to add user informatio in
-        the context"""
-
-        context = super().get_context_data(**kwargs)
-        context["user"] = User.objects.get(pk=self.kwargs["pk"])
-        return context
-
     def get_queryset(self):
         """Override the get_queryset() function for gettin desired data"""
 
@@ -85,8 +77,13 @@ class OrderListView(ListView):
     model = Order
     template_name = "core/Order_list.html"
 
+    def get_queryset(self):
+        """Override the get_queryset() function for gettin desired data"""
+
+        return Order.objects.filter(user__id=self.kwargs["pk"])
+
     def get_context_data(self, **kwargs):
-        """Override the get_context_data() function to add user informatio in
+        """Override the get_context_data() function to add user information in
         the context"""
         context = super().get_context_data(**kwargs)
         context["user"] = User.objects.get(pk=self.kwargs["pk"])
